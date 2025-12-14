@@ -1,0 +1,456 @@
+/* styles.css */
+
+/* --- A. CUSTOM FONT DECLARATIONS (From the live site's main.css) --- */
+
+/* AT Osmose Medium (used for headings/accents) */
+@font-face {
+    font-family: AT Osmose;
+    src: url(/wp-content/themes/demophorius/dist/fonts/AT_Osmose_Medium/Osmose-Medium_237cee3e.eot);
+    src: url(/wp-content/themes/demophorius/dist/fonts/AT_Osmose_Medium/Osmose-Medium_237cee3e.eot?#iefix) format("embedded-opentype"),
+         url(/wp-content/themes/demophorius/dist/fonts/AT_Osmose_Medium/Osmose-Medium_a96f62ec.woff2) format("woff2"),
+         url(/wp-content/themes/demophorius/dist/fonts/AT_Osmose_Medium/Osmose-Medium_3701b029.woff) format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap
+}
+
+/* Trivia Sans Medium (used for some navigation/bold text) */
+@font-face {
+    font-family: Trivia Sans;
+    src: url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Medium_d747cb17.ttf);
+    src: url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Medium_ab884fd8.eot);
+    src: url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Medium_ab884fd8.eot?#iefix) format("embedded-opentype"),
+         url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Medium_4a2da34c.woff) format("woff");
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap
+}
+
+/* Trivia Sans Regular (used for body text) */
+@font-face {
+    font-family: Trivia Sans;
+    src: url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Regular_8c21d057.ttf);
+    src: url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Regular_418afc81.eot);
+    src: url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Regular_418afc81.eot?#iefix) format("embedded-opentype"),
+         url(/wp-content/themes/demophorius/dist/fonts/Trivia_Sans/TriviaSans-Regular_197971d9.woff) format("woff");
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap
+}
+
+/* --- 1. Root Variables & Reset --- */
+:root {
+    /* Updated for intensity and orange */
+    --color-accent: #8e24aa; /* Intense Purple */
+    --color-blue: #007bff; /* Intense Blue */
+    --color-orange: #ff9800; /* NEW Intense Orange */
+    
+    --color-text: #000; 
+    --color-bg: #fff; 
+    --color-black: #000;
+    --color-white: #fff;
+    --color-border: #e0e0e0;
+    
+    --font-family-heading: 'AT Osmose', arial, sans-serif; 
+    --font-family-base: 'Trivia Sans', arial, sans-serif;
+    
+    --font-weight-normal: 400;
+    --font-weight-medium: 500;
+    
+    --container-width: 1320px;
+    --header-height: 90px;
+    --transition-speed: 0.6s cubic-bezier(.19,1,.22,1); 
+}
+
+/* General Reset and Global Styles */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    outline: none!important;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    cursor: none;
+}
+
+html {
+    scroll-behavior: smooth;
+    cursor: none; 
+}
+
+body {
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-normal);
+    font-size: 18px; 
+    line-height: 22px;
+    color: var(--color-text);
+    background-color: var(--color-bg); 
+    min-height: 100vh; 
+    position: relative; 
+}
+::-moz-selection { background: var(--color-blue); color: var(--color-white); }
+::selection { background: var(--color-blue); color: var(--color-white); }
+.container {
+    width: 100%;
+    max-width: var(--container-width);
+    margin: 0 auto;
+    padding: 0 20px;
+}
+a, a:focus, a:hover {
+    color: var(--color-black); 
+    text-decoration: none!important;
+}
+
+/* --- B. CUSTOM CURSOR STYLE --- */
+#cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--color-blue); 
+    border-radius: 50%;
+    transform: translate(-50%, -50%) scale(1);
+    pointer-events: none; 
+    z-index: 9999;
+    transition: transform 0.15s ease-out, background 0.15s ease-out;
+    mix-blend-mode: difference;
+    will-change: transform;
+}
+
+/* --- C. TYPOGRAPHY AND HEADINGS --- */
+h1, h2, h3, h4 {
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-medium);
+}
+.product-name-heading {
+    font-size: clamp(80px, 12vw, 180px); 
+    text-align: center;
+    line-height: 0.8;
+    color: var(--color-black);
+    position: relative;
+    z-index: 2;
+    text-transform: uppercase;
+}
+
+/* --- D. HEADER/NAV --- */
+.site-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    z-index: 100;
+    background-color: var(--color-bg);
+    transition: box-shadow var(--transition-speed);
+}
+.header-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%;
+}
+.logo {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--color-black);
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-medium);
+    text-transform: uppercase;
+    font-size: 15px;
+}
+.logo img {
+    height: 40px;
+    margin-right: 10px;
+}
+.main-nav ul {
+    list-style: none;
+    display: flex;
+    gap: 30px;
+}
+.main-nav a {
+    text-decoration: none;
+    color: var(--color-text);
+    position: relative;
+    padding: 5px 0;
+    font-weight: var(--font-weight-medium);
+    font-family: var(--font-family-heading);
+    text-transform: uppercase;
+}
+.main-nav a.is-active::after, .main-nav a:hover::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background-color: var(--color-blue);
+    transition: width var(--transition-speed);
+}
+.main-nav a.is-active::after { width: 100%; }
+
+/* --- E. LANDING SECTION CONTROLS --- */
+.landing-page {
+    padding-top: calc(var(--header-height) + 50px);
+    position: relative;
+    min-height: 80vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.landing-container {
+    position: relative;
+    padding-top: 50px;
+    padding-bottom: 50px;
+}
+.landing-control-left, .landing-control-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    opacity: 0;
+    transition: opacity var(--transition-speed) 0.5s;
+}
+.landing-control-left.is-visible, .landing-control-right.is-visible {
+    opacity: 1;
+}
+.landing-control-left { left: 0; }
+.landing-control-right { right: 0; }
+.back-circle-button {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: var(--color-black);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-white);
+    text-decoration: none;
+}
+.back-circle-button svg {
+    width: 24px;
+    height: 24px;
+    fill: var(--color-white);
+}
+.all-products-link-alt {
+    text-decoration: none;
+    color: var(--color-text);
+    font-weight: var(--font-weight-medium);
+    font-family: var(--font-family-heading);
+    text-transform: uppercase;
+}
+.product-selector-pill {
+    padding: 10px 20px;
+    border: 1px solid var(--color-border);
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: none;
+    font-weight: var(--font-weight-medium);
+    font-family: var(--font-family-heading);
+    text-transform: uppercase;
+}
+.dropdown-arrow svg {
+    width: 18px;
+    height: 18px;
+}
+
+/* --- F. MISTY BACKGROUND / BLOB (UPDATED) --- */
+.misty-background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+    opacity: 0.8; /* Increased opacity for intensity */
+}
+.blob {
+    position: absolute;
+    width: 500px;
+    height: 500px;
+    border-radius: 50%;
+    opacity: 0.6; /* Increased individual blob opacity */
+    filter: blur(120px); 
+    mix-blend-mode: soft-light;
+}
+
+/* All durations are 20% faster than originals */
+.blob-1 {
+    background-color: var(--color-accent); /* Intense Purple */
+    top: 10%; left: 10%;
+    /* 15s * 0.8 = 12s */
+    animation: blob-move 12s infinite alternate ease-in-out;
+}
+.blob-2 {
+    background-color: var(--color-blue); /* Intense Blue */
+    bottom: 5%; right: 15%;
+    /* 20s * 0.8 = 16s */
+    animation: blob-move 16s infinite alternate-reverse ease-in-out;
+}
+.blob-3 {
+    background-color: var(--color-orange); /* NEW Intense Orange */
+    top: 50%; right: 40%;
+    /* 18s * 0.8 = 14.4s */
+    animation: blob-move 14.4s infinite alternate ease-in-out;
+}
+.blob-4 {
+    background-color: #f0f0f0; /* Light element */
+    bottom: 30%; left: 35%;
+    /* 22s * 0.8 = 17.6s (Arbitrary new duration) */
+    animation: blob-move 17.6s infinite alternate-reverse ease-in-out;
+}
+@keyframes blob-move {
+    from { transform: translate(0, 0) scale(1); }
+    to { transform: translate(50px, 100px) scale(1.1); }
+}
+
+/* --- G. PRODUCT GRID & ANIMATION --- */
+.product-grid {
+    padding: 100px 0;
+}
+.product-grid .container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+}
+.product-card {
+    background-color: #fafafa;
+    border: 1px solid var(--color-border);
+    min-height: 250px;
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity var(--transition-speed) var(--delay), transform var(--transition-speed) var(--delay);
+    
+    position: relative;
+    overflow: hidden;
+}
+.product-card.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+.product-card:hover {
+    border-color: var(--color-blue);
+}
+.product-link {
+    display: block;
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    font-family: var(--font-family-heading);
+    font-weight: var(--font-weight-medium);
+    font-size: 20px;
+}
+
+/* --- H. LATEST UPDATES --- */
+.latest-updates {
+    padding: 50px 0 100px;
+}
+.latest-updates h3 {
+    font-family: var(--font-family-base);
+    font-weight: var(--font-weight-normal);
+    font-size: 16px;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    color: #666;
+}
+.latest-updates a {
+    font-family: var(--font-family-heading);
+    font-size: 40px;
+    line-height: 1.2;
+    display: inline-block;
+    position: relative;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity var(--transition-speed) var(--delay), transform var(--transition-speed) var(--delay);
+}
+.latest-updates a.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* --- I. FOOTER & FORM --- */
+.site-footer {
+    background-color: var(--color-black);
+    color: var(--color-white);
+    padding-top: 80px;
+    font-size: 16px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 40px;
+    padding-bottom: 50px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+.footer-heading {
+    color: var(--color-blue);
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    font-family: var(--font-family-heading);
+}
+.newsletter-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-family: var(--font-family-heading);
+}
+.newsletter-form input {
+    width: 100%;
+    padding: 10px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--color-white);
+    font-family: var(--font-family-base);
+}
+.btn-submit {
+    background-color: var(--color-blue);
+    color: var(--color-white);
+    border: none;
+    padding: 10px 20px;
+    cursor: none;
+    font-weight: var(--font-weight-medium);
+    margin-top: 15px;
+    text-transform: uppercase;
+    font-family: var(--font-family-heading);
+}
+.footer-bottom {
+    padding: 20px 0;
+    text-align: center;
+    font-size: 14px;
+}
+
+/* --- J. MEDIA QUERIES --- */
+@media (max-width: 1024px) {
+    #cursor {
+        display: none;
+    }
+    * {
+        cursor: default;
+    }
+    .landing-control-left, .landing-control-right {
+        position: static;
+        transform: none;
+        width: 100%;
+        justify-content: center;
+        margin-top: 20px;
+    }
+    .landing-control-left { order: 2; }
+    .landing-control-right { order: 1; }
+    .landing-container {
+        display: flex;
+        flex-direction: column;
+    }
+    .product-grid .container {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .footer-grid {
+        grid-template-columns: 1fr;
+    }
+}
