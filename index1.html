@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hero & Header Section</title>
+    <style>
+        /* --- General Setup --- */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            /* Using a common sans-serif stack */
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: #333;
+            overflow: hidden; /* Prevents scrollbars from background animation */
+        }
+
+        .hero-container {
+            position: relative;
+            height: 100vh;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden; /* Contains the animated bg */
+        }
+
+        /* --- Animated Background --- */
+        .animated-bg {
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            z-index: -1;
+            /* Replicating the blurry gradient from the video */
+            background: linear-gradient(
+                270deg, 
+                #d1e3ff, /* Light Blue */
+                #e8d0ff, /* Light Purple */
+		#FFD580, /* Light Orange */
+                #ffffff  /* White */
+            );
+            background-size: 400% 400%;
+            animation: gradientAnimation 20s ease infinite;
+        }
+
+        @keyframes gradientAnimation {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Header / Navbar --- */
+        .main-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem 2.5rem;
+            width: 100%;
+            box-sizing: border-box;
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 100;
+        }
+
+        .logo {
+            line-height: 1.1;
+        }
+
+        .logo-main {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        .logo-sub {
+            font-size: 0.6rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            color: #555;
+            text-transform: uppercase;
+        }
+
+        /* Mobile-first: Hide main nav */
+        .main-nav {
+            display: none;
+        }
+
+        .main-nav a {
+            text-decoration: none;
+            color: #555;
+            margin: 0 1rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: lowercase;
+            transition: color 0.3s ease;
+        }
+
+        /* Specific hover colors from video */
+        .main-nav a.active,
+        .main-nav a[data-color="blue"]:hover { 
+            color: #007bff; 
+        }
+        .main-nav a[data-color="red"]:hover { 
+            color: #dc3545; 
+        }
+        .main-nav a[data-color="purple"]:hover { 
+            color: #6f42c1; 
+        }
+        .main-nav a[data-color="green"]:hover { 
+            color: #28a745; 
+        }
+        .main-nav a[data-color="cyan"]:hover { 
+            color: #17a2b8; 
+        }
+        
+        .menu-toggle {
+            background: #000;
+            border: none;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 8px; /* Rounded square */
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            gap: 5px;
+            transition: border-radius 0.3s ease;
+        }
+
+        /* Morph to circle on hover */
+        .menu-toggle:hover {
+            border-radius: 50%;
+        }
+
+        .menu-toggle span {
+            display: block;
+            width: 20px;
+            height: 2px;
+            background: #fff;
+        }
+
+        /* --- Main Hero Content --- */
+        .hero-content {
+            flex-grow: 1;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start; /* Align columns to the top */
+            padding: 8rem 2.5rem 2.5rem; /* Account for fixed header */
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .content-left {
+            /* Takes up available space */
+        }
+
+        .back-link {
+            display: inline-flex; /* Use inline-flex to fit content */
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: #333;
+            margin-bottom: 2rem;
+        }
+
+        .back-arrow {
+            width: 40px;
+            height: 40px;
+            background: #000;
+            color: #fff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .back-link span {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+        
+        .hero-heading {
+            font-size: 3.5rem; /* Start smaller for mobile */
+            font-weight: 700;
+            color: #000;
+            margin: 0;
+            line-height: 1.1;
+            text-transform: uppercase;
+        }
+
+        /* Mobile-first: Hide dropdown */
+        .content-right {
+            display: none;
+            margin-top: 2.5rem; /* Align with "ALL PRODUCTS" link */
+        }
+
+        .product-dropdown {
+            background: #ffffff;
+            border: 1px solid #ccc;
+            border-radius: 25px; /* Pill shape */
+            padding: 0.75rem 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            min-width: 200px;
+            cursor: pointer;
+            transition: box-shadow 0.3s ease, border-color 0.3s ease;
+        }
+
+        /* Subtle hover effect from video */
+        .product-dropdown:hover {
+            border-color: #999;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .product-dropdown span {
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+        }
+
+        .product-dropdown .down-arrow {
+            font-size: 1.25rem;
+            color: #555;
+            margin-left: 2rem;
+        }
+
+        /* --- Responsive Styles (Desktop) --- */
+        @media (min-width: 1024px) {
+            .main-nav {
+                display: flex;
+            }
+            
+            .content-right {
+                display: block;
+            }
+
+            .hero-content {
+                padding-top: 12rem; /* More space on desktop */
+            }
+
+            .hero-heading {
+                font-size: 6rem; /* Large heading on desktop */
+            }
+        }
+        
+        /* --- Responsive Styles (Tablet) --- */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            /* On tablet, we keep the mobile-first layout 
+               (no center nav, no dropdown) */
+            .hero-heading {
+                font-size: 5rem;
+            }
+        }
+        
+        /* --- Responsive Styles (Small Mobile) --- */
+        @media (max-width: 480px) {
+            .main-header {
+                padding: 1rem 1.5rem;
+            }
+            .hero-content {
+                padding: 7rem 1.5rem 1.5rem;
+            }
+            .hero-heading {
+                font-size: 2.8rem;
+            }
+            .logo-main {
+                font-size: 1.1rem;
+            }
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="hero-container">
+        <div class="animated-bg"></div>
+
+        <header class="main-header">
+            <div class="logo">
+                <div class="logo-main">SM BLOGS</div>
+                <div class="logo-sub">DiGiTaL</div>
+            </div>
+            
+            <nav class="main-nav">
+                <a href="#" class="active" data-color="blue">Contact</a>
+                <a href="#" data-color="red">Application</a>
+                <a href="#" data-color="purple">digital</a>
+                <a href="#" data-color="green">Tools</a>
+                <a href="#" data-color="cyan">AI Solution</a>
+            </nav>
+            
+            <button class="menu-toggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+        </header>
+
+        <main class="hero-content">
+            <section class="content-left">
+                <a href="#" class="back-link">
+                    <div class="back-arrow">&larr;</div>
+                    <span>ALL PRODUCTS</span>
+                </a>
+                <h1 class="hero-heading">SUDHANSHU</h1>
+            </section>
+            
+            <aside class="content-right">
+                <div class="product-dropdown">
+                    <span>READ BLOGS</span>
+                    <span class="down-arrow">&darr;</span>
+                </div>
+            </aside>
+        </main>
+    </div>
+    
+    </body>
+</html>
