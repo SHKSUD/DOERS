@@ -4,80 +4,184 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Doers Digital — Sudhanshu</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&family=Playfair+Display:ital,wght@0,900;1,400&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --bg:#0a0a08;--bg2:#111110;--bg3:#161614;
   --text:#f0ede6;--muted:#6b6960;--muted2:#4a4944;
-  --accent:#d4f53c;--accent-dark:#9ab82a;--warm:#ff6b35;
+  --accent:#d4f53c;--accent-dark:#9ab82a;
   --border:rgba(240,237,230,0.07);--border2:rgba(240,237,230,0.14);
-  --fd:'Bebas Neue',sans-serif;
-  --fb:'Space Grotesk',sans-serif;
-  --fm:'DM Mono',monospace;
-  --fs:'Playfair Display',serif;
+  --fd:'Bebas Neue',sans-serif;--fb:'Space Grotesk',sans-serif;
+  --fm:'DM Mono',monospace;--fs:'Playfair Display',serif;
 }
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden;cursor:none}
-
-/* NOISE OVERLAY */
-body::before{
-  content:'';position:fixed;inset:0;
-  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-  pointer-events:none;z-index:1000;opacity:0.35;
-}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:1000;opacity:.35}
 
 /* CURSOR */
-.cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference;transition:width .2s,height .2s}
-.cur-ring{position:fixed;top:0;left:0;width:32px;height:32px;border:1px solid rgba(212,245,60,0.5);border-radius:50%;pointer-events:none;z-index:9998;transition:width .2s,height .2s}
+.cur{position:fixed;top:0;left:0;width:8px;height:8px;background:var(--accent);border-radius:50%;pointer-events:none;z-index:9999;mix-blend-mode:difference}
+.cur-ring{position:fixed;top:0;left:0;width:32px;height:32px;border:1px solid rgba(212,245,60,.5);border-radius:50%;pointer-events:none;z-index:9998;transition:width .2s,height .2s}
+@media(hover:none){.cur,.cur-ring{display:none}body{cursor:auto}}
 
 /* NAV */
-nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid var(--border);background:rgba(10,10,8,0.9);backdrop-filter:blur(16px)}
-.nav-brand{display:flex;flex-direction:column;line-height:1;gap:1px}
+nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:center;justify-content:space-between;padding:1.25rem 3rem;border-bottom:1px solid var(--border);background:rgba(10,10,8,.92);backdrop-filter:blur(16px)}
+.nav-brand{display:flex;flex-direction:column;line-height:1;gap:1px;text-decoration:none}
 .nav-brand .b1{font-family:var(--fd);font-size:20px;letter-spacing:.1em;color:var(--text)}
 .nav-brand .b2{font-family:var(--fm);font-size:8px;letter-spacing:.38em;color:var(--accent);text-transform:uppercase}
-.nav-links{display:flex;gap:2.5rem;list-style:none}
+.nav-links{display:flex;gap:2.25rem;list-style:none}
 .nav-links a{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:500}
 .nav-links a:hover{color:var(--text)}
-.nav-cta{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:.55rem 1.4rem;text-decoration:none;font-weight:700;transition:background .2s,transform .15s;font-family:var(--fb)}
+.nav-cta{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--bg);background:var(--accent);padding:.55rem 1.4rem;text-decoration:none;font-weight:700;font-family:var(--fb);transition:background .2s,transform .15s}
 .nav-cta:hover{background:#bfdf2b;transform:scale(.98)}
+.nav-ham{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:4px;background:none;border:none}
+.nav-ham span{display:block;width:22px;height:1.5px;background:var(--text);transition:all .3s}
+.nav-ham.open span:nth-child(1){transform:translateY(6.5px) rotate(45deg)}
+.nav-ham.open span:nth-child(2){opacity:0}
+.nav-ham.open span:nth-child(3){transform:translateY(-6.5px) rotate(-45deg)}
+.nav-mobile{display:none;position:fixed;inset:0;background:var(--bg);z-index:400;flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.nav-mobile.open{display:flex}
+.nav-mobile a{font-family:var(--fd);font-size:46px;letter-spacing:.06em;color:var(--text);text-decoration:none;transition:color .2s}
+.nav-mobile a:hover{color:var(--accent)}
+.nav-mobile .m-cta{background:var(--accent);color:var(--bg);font-size:14px;font-family:var(--fb);letter-spacing:.15em;text-transform:uppercase;padding:.9rem 2.25rem;font-weight:700;margin-top:.5rem}
 
-/* HERO */
-.hero{min-height:100vh;display:grid;grid-template-rows:auto 1fr auto;padding:9rem 3rem 4rem;position:relative;overflow:hidden}
-.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,0.025) 1px,transparent 1px);background-size:72px 72px;pointer-events:none}
-.hero-glow{position:absolute;top:-20%;right:-10%;width:60vw;height:60vw;background:radial-gradient(circle,rgba(212,245,60,0.04) 0%,transparent 65%);pointer-events:none}
-.hero-eye{display:flex;align-items:center;gap:.75rem;margin-bottom:2.5rem}
-.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 2s infinite}
+/* ═══════════════════════════
+   HERO — PROBLEM-FIRST
+═══════════════════════════ */
+.hero{
+  min-height:100vh;
+  padding:8rem 3rem 5rem;
+  position:relative;overflow:hidden;
+  display:flex;flex-direction:column;justify-content:center;gap:4rem;
+}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(240,237,230,.022) 1px,transparent 1px),linear-gradient(90deg,rgba(240,237,230,.022) 1px,transparent 1px);background-size:72px 72px;pointer-events:none}
+.hero-glow{position:absolute;top:-10%;right:-5%;width:55vw;height:55vw;background:radial-gradient(circle,rgba(212,245,60,.05) 0%,transparent 65%);pointer-events:none}
+.hero-glow2{position:absolute;bottom:-20%;left:-5%;width:40vw;height:40vw;background:radial-gradient(circle,rgba(212,245,60,.025) 0%,transparent 65%);pointer-events:none}
+
+/* eyebrow */
+.hero-eye{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap}
+.hero-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);animation:blink 2s infinite;flex-shrink:0}
 @keyframes blink{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.6)}}
-.hero-eye-txt{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:var(--muted);font-family:var(--fm)}
-.hero-titles{display:flex;flex-direction:column;line-height:.86;margin-bottom:3.5rem}
-.hl{display:block;overflow:hidden}
-.hl span{display:block;animation:sup .85s cubic-bezier(.16,1,.3,1) both}
-.hl:nth-child(1) span{animation-delay:.05s}
-.hl:nth-child(2) span{animation-delay:.15s}
-.hl:nth-child(3) span{animation-delay:.25s}
-.hl:nth-child(4) span{animation-delay:.35s}
-@keyframes sup{from{transform:translateY(108%);opacity:0}to{transform:translateY(0);opacity:1}}
-.td{font-family:var(--fd);font-size:clamp(68px,11.5vw,150px);letter-spacing:-.01em;color:var(--text)}
-.ti{font-family:var(--fs);font-style:italic;font-size:clamp(56px,9.5vw,124px);color:var(--accent);letter-spacing:-.02em}
-.to{font-family:var(--fd);font-size:clamp(68px,11.5vw,150px);letter-spacing:-.01em;-webkit-text-stroke:1px rgba(240,237,230,.2);color:transparent}
-.hero-bot{display:flex;align-items:flex-end;justify-content:space-between;gap:3rem}
-.hero-desc{max-width:360px;font-size:14px;line-height:1.75;color:var(--muted);font-weight:300}
-.hero-desc strong{color:var(--text);font-weight:500}
-.hero-actions{display:flex;flex-direction:column;gap:.9rem;align-items:flex-start}
-.btn-p{display:inline-flex;align-items:center;gap:.7rem;background:var(--accent);color:var(--bg);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.9rem 1.8rem;text-decoration:none;transition:transform .2s,background .2s;font-family:var(--fb)}
+.hero-eye-txt{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted);font-family:var(--fm)}
+
+/* opener */
+.hero-opener{
+  display:flex;flex-direction:column;gap:0;
+  overflow:hidden;
+}
+.hero-opener-q{
+  font-family:var(--fd);
+  font-size:clamp(52px,9vw,120px);
+  line-height:.88;letter-spacing:-.01em;
+  color:var(--text);
+  display:block;overflow:hidden;
+}
+.hero-opener-q span{display:block;animation:sup .9s cubic-bezier(.16,1,.3,1) .05s both}
+.hero-opener-sub{
+  font-family:var(--fs);font-style:italic;
+  font-size:clamp(44px,7.5vw,100px);
+  line-height:.88;letter-spacing:-.02em;
+  color:var(--accent);
+  display:block;overflow:hidden;
+}
+.hero-opener-sub span{display:block;animation:sup .9s cubic-bezier(.16,1,.3,1) .18s both}
+@keyframes sup{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
+
+/* problem cards grid */
+.hero-problems{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:1px;
+  background:var(--border);
+  animation:fadeUp .7s ease .4s both;
+}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+.prob-card{
+  background:var(--bg);
+  padding:1.75rem 2rem;
+  position:relative;overflow:hidden;
+  transition:background .3s;
+  cursor:default;
+}
+.prob-card:hover{background:var(--bg2)}
+.prob-card::before{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(135deg,rgba(212,245,60,.04) 0%,transparent 60%);
+  opacity:0;transition:opacity .3s
+}
+.prob-card:hover::before{opacity:1}
+.prob-quote{
+  font-family:var(--fd);font-size:48px;line-height:.7;
+  color:rgba(212,245,60,.15);
+  display:block;margin-bottom:.5rem;
+  transition:color .3s
+}
+.prob-card:hover .prob-quote{color:rgba(212,245,60,.3)}
+.prob-text{
+  font-size:clamp(14px,1.6vw,18px);
+  line-height:1.5;
+  color:var(--text);
+  font-weight:400;
+  margin-bottom:1rem;
+}
+.prob-text em{color:var(--accent);font-style:normal;font-weight:600}
+.prob-who{
+  font-family:var(--fm);font-size:9px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--muted);
+  display:flex;align-items:center;gap:.5rem;
+}
+.prob-who::before{content:'';width:10px;height:1px;background:var(--muted)}
+
+/* hero bottom — the turn */
+.hero-turn{
+  display:flex;align-items:flex-end;justify-content:space-between;gap:3rem;
+  animation:fadeUp .7s ease .6s both;
+}
+.hero-turn-left{}
+.hero-turn-label{
+  font-family:var(--fm);font-size:9px;letter-spacing:.3em;
+  text-transform:uppercase;color:var(--accent);
+  margin-bottom:.75rem;
+  display:flex;align-items:center;gap:.5rem;
+}
+.hero-turn-label::before{content:'';width:16px;height:1px;background:var(--accent)}
+.hero-turn-h{
+  font-family:var(--fd);
+  font-size:clamp(36px,5vw,64px);
+  line-height:.9;letter-spacing:.01em;color:var(--text);
+  margin-bottom:.75rem;
+}
+.hero-turn-h em{font-family:var(--fs);font-style:italic;color:var(--accent)}
+.hero-turn-sub{
+  font-size:14px;line-height:1.75;color:var(--muted);
+  font-weight:300;max-width:460px;margin-bottom:1.75rem;
+}
+.hero-turn-sub strong{color:var(--text);font-weight:500}
+.hero-actions{display:flex;align-items:center;gap:1.25rem;flex-wrap:wrap}
+.btn-p{display:inline-flex;align-items:center;gap:.7rem;background:var(--accent);color:var(--bg);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.95rem 1.9rem;text-decoration:none;transition:transform .2s,background .2s;font-family:var(--fb)}
 .btn-p:hover{transform:translate(-2px,-2px);background:#bfdf2b}
 .btn-g{display:inline-flex;align-items:center;gap:.4rem;color:var(--muted);font-size:10px;letter-spacing:.22em;text-transform:uppercase;text-decoration:none;font-weight:500;border-bottom:1px solid var(--border2);padding-bottom:2px;transition:color .2s,border-color .2s}
 .btn-g:hover{color:var(--text);border-color:var(--text)}
+.hero-turn-right{flex-shrink:0}
 .scroll-ind{display:flex;flex-direction:column;align-items:center;gap:.5rem}
-.scroll-line{width:1px;height:56px;background:linear-gradient(var(--accent),transparent);animation:sline 1.8s ease infinite}
+.scroll-line{width:1px;height:60px;background:linear-gradient(var(--accent),transparent);animation:sline 1.8s ease infinite}
 @keyframes sline{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 .scroll-lbl{font-size:8px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);font-family:var(--fm);writing-mode:vertical-rl}
 
+/* PASSION BANNER */
+.tax-banner{padding:1.75rem 3rem;background:rgba(212,245,60,.05);border-top:1px solid rgba(212,245,60,.12);border-bottom:1px solid rgba(212,245,60,.12);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
+.tax-left{display:flex;align-items:center;gap:1.25rem}
+.tax-icon{font-size:20px;flex-shrink:0}
+.tax-label{font-family:var(--fm);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:.25rem}
+.tax-text{font-size:clamp(13px,2vw,17px);color:var(--text);font-weight:400;line-height:1.3}
+.tax-text em{font-style:normal;color:var(--accent);font-weight:600}
+.tax-badge{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(212,245,60,.22);color:var(--accent);font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:.4rem 1rem;white-space:nowrap;flex-shrink:0}
+.tax-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
+
 /* MARQUEE */
 .mq-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.9rem 0;background:var(--bg2);overflow:hidden}
-.mq-track{display:flex;width:max-content;animation:mq 28s linear infinite}
+.mq-track{display:flex;width:max-content;animation:mq 30s linear infinite}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 .mq-item{display:flex;align-items:center;gap:1.5rem;padding:0 2rem;white-space:nowrap}
 .mq-item span{font-family:var(--fd);font-size:12px;letter-spacing:.28em;color:var(--muted);text-transform:uppercase}
@@ -85,120 +189,136 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 
 /* SECTIONS */
 .sec{padding:7rem 3rem;border-top:1px solid var(--border)}
-.sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:4.5rem;gap:2rem}
+.sec-hdr{display:flex;align-items:flex-start;justify-content:space-between;gap:3rem;margin-bottom:5rem}
 .sec-tag{font-family:var(--fm);font-size:10px;letter-spacing:.22em;color:var(--accent);display:flex;align-items:center;gap:.5rem;margin-bottom:.75rem}
 .sec-tag::before{content:'';display:block;width:20px;height:1px;background:var(--accent)}
-.sec-h{font-family:var(--fd);font-size:clamp(44px,6.5vw,88px);line-height:.9;letter-spacing:-.01em}
+.sec-h{font-family:var(--fd);font-size:clamp(40px,7vw,96px);line-height:.88;letter-spacing:-.01em}
 .sec-h em{font-family:var(--fs);font-style:italic;color:var(--accent)}
-.sec-sub{max-width:260px;font-size:13px;line-height:1.7;color:var(--muted);font-weight:300;padding-top:.4rem}
+.sec-sub{font-size:14px;line-height:1.75;color:var(--muted);font-weight:300;max-width:300px;padding-top:.4rem}
+.sec-sub strong{color:var(--text);font-weight:500}
 
-/* ABOUT / PERSONAL */
-.about-wrap{display:grid;grid-template-columns:1fr 1fr;gap:0;border:1px solid var(--border)}
-.about-left{padding:3.5rem;border-right:1px solid var(--border);display:flex;flex-direction:column;justify-content:space-between;gap:3rem}
-.about-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:28px;color:var(--bg);letter-spacing:.05em;flex-shrink:0}
+/* ELIMINATION CARDS */
+.elim-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
+.elim-card{background:var(--bg);padding:3rem;position:relative;overflow:hidden;transition:background .35s;cursor:default;opacity:0}
+.elim-card.revealed{animation:cardReveal .6s cubic-bezier(.16,1,.3,1) forwards}
+@keyframes cardReveal{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.elim-card:hover{background:var(--bg2)}
+.elim-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,245,60,.045) 0%,transparent 55%);opacity:0;transition:opacity .4s}
+.elim-card:hover::before{opacity:1}
+.elim-ghost{position:absolute;bottom:-1.5rem;right:1rem;font-family:var(--fd);font-size:140px;line-height:1;color:rgba(240,237,230,.028);pointer-events:none;transition:color .35s}
+.elim-card:hover .elim-ghost{color:rgba(212,245,60,.045)}
+.elim-who{font-family:var(--fm);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:1.5rem;display:flex;align-items:center;gap:.6rem}
+.elim-who::before{content:'';width:14px;height:1px;background:var(--muted);flex-shrink:0}
+.elim-pain{font-family:var(--fd);font-size:clamp(30px,3.8vw,50px);line-height:.88;letter-spacing:.02em;color:var(--text);margin-bottom:1.75rem}
+.elim-div{display:flex;align-items:center;gap:1rem;margin-bottom:1.75rem}
+.elim-div-line{flex:1;height:1px;background:var(--border2)}
+.elim-div-icon{width:28px;height:28px;border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--accent);flex-shrink:0;transition:background .3s,border-color .3s}
+.elim-card:hover .elim-div-icon{background:rgba(212,245,60,.12);border-color:rgba(212,245,60,.3)}
+.elim-result{font-size:14px;line-height:1.8;color:var(--muted);font-weight:300;margin-bottom:2rem}
+.elim-result strong{color:var(--accent);font-weight:600}
+.elim-foot{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);border:1px solid var(--border);padding:.3rem .85rem;transition:all .3s}
+.elim-card:hover .elim-foot{border-color:rgba(212,245,60,.28);color:var(--accent)}
+
+/* STATS */
+.stats-band{background:var(--accent);padding:4rem 3rem;display:grid;grid-template-columns:repeat(4,1fr)}
+.stat-i{padding:0 2rem;border-right:1px solid rgba(10,10,8,.15);display:flex;flex-direction:column}
+.stat-i:first-child{padding-left:0}
+.stat-i:last-child{border-right:none}
+.stat-n{font-family:var(--fd);font-size:clamp(44px,5vw,68px);line-height:.9;color:var(--bg);letter-spacing:-.02em;font-variant-numeric:tabular-nums;min-height:1em}
+.stat-outcome{font-size:13px;color:rgba(10,10,8,.75);font-weight:500;line-height:1.3;margin-top:.6rem}
+.stat-l{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,8,.45);font-weight:600;font-family:var(--fm);margin-top:.3rem}
+
+/* ABOUT */
+.about-wrap{display:grid;grid-template-columns:1fr 1fr;border:1px solid var(--border)}
+.about-left{padding:3.5rem;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:2.5rem}
+.about-avatar{width:80px;height:80px;border-radius:50%;background:linear-gradient(135deg,var(--accent) 0%,var(--accent-dark) 100%);display:flex;align-items:center;justify-content:center;font-family:var(--fd);font-size:28px;color:var(--bg);flex-shrink:0}
 .about-name-block{display:flex;align-items:center;gap:1.25rem}
 .about-name{font-family:var(--fd);font-size:48px;line-height:.9;letter-spacing:.02em}
 .about-title{font-family:var(--fm);font-size:10px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-top:.5rem}
-.about-bio{font-size:15px;line-height:1.8;color:var(--muted);font-weight:300}
+.about-hook{font-family:var(--fd);font-size:clamp(20px,2.5vw,28px);line-height:1.05;letter-spacing:.02em;color:var(--text);padding:1.5rem;border:1px solid var(--border2);border-left:3px solid var(--accent);background:rgba(212,245,60,.03)}
+.about-hook em{color:var(--accent);font-style:normal}
+.about-bio{font-size:14px;line-height:1.85;color:var(--muted);font-weight:300}
 .about-bio strong{color:var(--text);font-weight:500}
-.about-stats{display:flex;gap:2.5rem}
-.about-stat-n{font-family:var(--fd);font-size:40px;line-height:.9;color:var(--text)}
-.about-stat-l{font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-family:var(--fm);margin-top:.3rem}
-.about-right{padding:3.5rem;display:flex;flex-direction:column;gap:1.5rem;background:var(--bg2)}
-.about-right-head{font-family:var(--fd);font-size:22px;letter-spacing:.04em;color:var(--text);margin-bottom:.5rem}
-.skill-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 0;border-bottom:1px solid var(--border)}
-.skill-row:last-child{border-bottom:none}
-.skill-name{font-size:13px;font-weight:500;color:var(--text)}
-.skill-bar-wrap{flex:1;max-width:160px;height:2px;background:var(--border2);margin:0 1.5rem;position:relative}
-.skill-bar{height:100%;background:var(--accent);animation:grow 1s ease both}
-@keyframes grow{from{width:0}to{width:var(--w)}}
-.skill-yr{font-family:var(--fm);font-size:10px;color:var(--muted);letter-spacing:.12em}
-.about-tag-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:auto;padding-top:1.5rem;border-top:1px solid var(--border)}
-.tag{display:inline-block;font-size:10px;letter-spacing:.15em;text-transform:uppercase;border:1px solid var(--border2);color:var(--muted);padding:.3rem .75rem;font-family:var(--fm);transition:all .2s}
-.tag:hover{border-color:var(--accent);color:var(--accent)}
+.about-proof{display:flex;gap:2rem;flex-wrap:wrap;padding-top:1.5rem;border-top:1px solid var(--border)}
+.ap-n{font-family:var(--fd);font-size:36px;line-height:.9;color:var(--text)}
+.ap-l{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);font-family:var(--fm);margin-top:.3rem}
+.about-right{padding:3.5rem;display:flex;flex-direction:column;gap:1.25rem;background:var(--bg2)}
+.about-right-head{font-family:var(--fd);font-size:18px;letter-spacing:.04em;color:var(--text);margin-bottom:.25rem}
+.elim-pillar{padding:1.5rem;border:1px solid var(--border);transition:all .3s;cursor:default}
+.elim-pillar:hover{border-color:rgba(212,245,60,.25);background:rgba(212,245,60,.03)}
+.ep-num{font-family:var(--fm);font-size:9px;letter-spacing:.2em;color:var(--accent);margin-bottom:.4rem}
+.ep-title{font-family:var(--fd);font-size:22px;letter-spacing:.03em;color:var(--text);margin-bottom:.5rem}
+.ep-desc{font-size:12px;line-height:1.65;color:var(--muted);font-weight:300}
+.ep-tags{display:flex;flex-wrap:wrap;gap:.35rem;margin-top:.75rem}
+.ep-tag{font-size:9px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--border);color:var(--muted2);padding:.2rem .55rem;font-family:var(--fm)}
 
 /* SERVICES */
 .svc-grid{display:grid;grid-template-columns:repeat(3,1fr);border:1px solid var(--border)}
-.svc-card{padding:2.5rem;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background .3s;cursor:default}
+.svc-card{padding:2.5rem;border-right:1px solid var(--border);position:relative;overflow:hidden;transition:background .3s}
 .svc-card:last-child{border-right:none}
 .svc-card:hover{background:var(--bg2)}
-.svc-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,245,60,0.05) 0%,transparent 55%);opacity:0;transition:opacity .3s}
+.svc-card::after{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(212,245,60,.05) 0%,transparent 55%);opacity:0;transition:opacity .3s}
 .svc-card:hover::after{opacity:1}
 .svc-ico{font-size:10px;font-family:var(--fm);letter-spacing:.28em;color:var(--accent);text-transform:uppercase;margin-bottom:2rem}
 .svc-n-big{position:absolute;top:1.5rem;right:2rem;font-family:var(--fd);font-size:64px;color:rgba(240,237,230,.04);line-height:1;pointer-events:none}
-.svc-name{font-family:var(--fd);font-size:34px;line-height:.92;letter-spacing:.02em;margin-bottom:1.25rem}
+.svc-name{font-family:var(--fd);font-size:34px;line-height:.92;letter-spacing:.02em;margin-bottom:.6rem}
+.svc-outcome{font-size:11px;font-family:var(--fm);letter-spacing:.1em;color:var(--accent);margin-bottom:1rem;text-transform:uppercase}
 .svc-desc{font-size:13px;line-height:1.7;color:var(--muted);font-weight:300;margin-bottom:1.75rem}
 .svc-pills{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:2rem}
 .svc-pill{font-size:9px;letter-spacing:.14em;text-transform:uppercase;border:1px solid var(--border);color:var(--muted2);padding:.2rem .6rem;font-family:var(--fm)}
 .svc-lnk{font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);text-decoration:none;font-weight:600;transition:color .2s}
 .svc-lnk:hover{color:var(--accent)}
 
-/* STATS BAND */
-.stats-band{background:var(--accent);padding:3.5rem 3rem;display:grid;grid-template-columns:repeat(4,1fr)}
-.stat-i{padding:0 2rem;border-right:1px solid rgba(10,10,8,.15);display:flex;flex-direction:column;gap:.2rem}
-.stat-i:first-child{padding-left:0}
-.stat-i:last-child{border-right:none}
-.stat-n{font-family:var(--fd);font-size:60px;line-height:.9;color:var(--bg);letter-spacing:-.02em}
-.stat-l{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:rgba(10,10,8,.5);font-weight:600;font-family:var(--fm)}
-
-/* LEAD MAGNET — ESTIMATOR */
-.estimator-wrap{background:var(--bg3);border:1px solid var(--border2);padding:0;overflow:hidden}
-.est-header{padding:3rem 3.5rem 2rem;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:2rem}
+/* ESTIMATOR */
+.estimator-wrap{background:var(--bg3);border:1px solid var(--border2);overflow:hidden}
+.est-header{padding:3rem 3.5rem 2rem;border-bottom:1px solid var(--border)}
 .est-badge{display:inline-flex;align-items:center;gap:.5rem;background:rgba(212,245,60,.1);border:1px solid rgba(212,245,60,.25);color:var(--accent);font-size:9px;letter-spacing:.25em;text-transform:uppercase;padding:.35rem .9rem;font-family:var(--fm);margin-bottom:1rem}
-.est-title{font-family:var(--fd);font-size:48px;line-height:.9;letter-spacing:.02em}
-.est-sub{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;max-width:360px;margin-top:.75rem}
+.est-title{font-family:var(--fd);font-size:clamp(28px,4.5vw,48px);line-height:.9;letter-spacing:.02em}
+.est-sub{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;max-width:420px;margin-top:.75rem}
 .est-body{padding:2.5rem 3.5rem}
-
-/* STEP INDICATOR */
-.step-ind{display:flex;align-items:center;gap:0;margin-bottom:2.5rem}
-.step-dot{width:28px;height:28px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;color:var(--muted);transition:all .3s;flex-shrink:0}
+.step-ind{display:flex;align-items:center;margin-bottom:2.5rem}
+.step-dot{width:26px;height:26px;border-radius:50%;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:10px;color:var(--muted);transition:all .3s;flex-shrink:0}
 .step-dot.active{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:700}
 .step-dot.done{background:rgba(212,245,60,.15);border-color:rgba(212,245,60,.4);color:var(--accent)}
 .step-line{flex:1;height:1px;background:var(--border);max-width:48px}
 .step-line.done{background:rgba(212,245,60,.3)}
-
-/* QUESTION BLOCK */
 .q-block{display:none;animation:fadeIn .35s ease}
 .q-block.active{display:block}
 @keyframes fadeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
 .q-label{font-family:var(--fm);font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem}
-.q-text{font-family:var(--fd);font-size:32px;line-height:.95;letter-spacing:.02em;margin-bottom:2rem}
+.q-text{font-family:var(--fd);font-size:clamp(20px,3.5vw,32px);line-height:.95;letter-spacing:.02em;margin-bottom:2rem}
 .q-opts{display:flex;flex-direction:column;gap:.6rem}
 .q-opt{display:flex;align-items:center;gap:1rem;padding:1rem 1.25rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;user-select:none}
 .q-opt:hover{border-color:var(--border2);background:rgba(240,237,230,.03)}
 .q-opt.sel{border-color:var(--accent);background:rgba(212,245,60,.06)}
-.q-opt-radio{width:16px;height:16px;border-radius:50%;border:1px solid var(--border2);flex-shrink:0;transition:all .2s;display:flex;align-items:center;justify-content:center}
+.q-opt-radio{width:16px;height:16px;border-radius:50%;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
 .q-opt.sel .q-opt-radio{border-color:var(--accent);background:var(--accent)}
 .q-opt.sel .q-opt-radio::after{content:'';width:6px;height:6px;border-radius:50%;background:var(--bg)}
-.q-opt-txt{font-size:14px;color:var(--muted);font-weight:300;transition:color .2s}
+.q-opt-txt{font-size:14px;color:var(--muted);font-weight:300;transition:color .2s;flex:1}
 .q-opt.sel .q-opt-txt{color:var(--text)}
-.q-opt-val{font-family:var(--fm);font-size:10px;color:var(--muted2);margin-left:auto;letter-spacing:.1em}
+.q-opt-val{font-family:var(--fm);font-size:10px;color:var(--muted2);letter-spacing:.1em;white-space:nowrap}
 .q-opt.sel .q-opt-val{color:var(--accent)}
-
-/* NAV BUTTONS */
 .est-nav{display:flex;align-items:center;justify-content:space-between;margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)}
 .est-back{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);background:none;border:none;cursor:pointer;font-family:var(--fb);font-weight:600;transition:color .2s;padding:0}
 .est-back:hover{color:var(--text)}
 .est-next{display:inline-flex;align-items:center;gap:.6rem;background:var(--accent);color:var(--bg);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:.8rem 1.75rem;border:none;cursor:pointer;font-family:var(--fb);transition:background .2s,transform .15s}
 .est-next:hover{background:#bfdf2b;transform:translate(-1px,-1px)}
 .est-next:disabled{opacity:.4;cursor:not-allowed;transform:none}
-
-/* RESULT */
 .result-block{display:none;animation:fadeIn .4s ease}
 .result-block.show{display:block}
-.result-score-wrap{display:grid;grid-template-columns:1fr 1fr 1fr;gap:1px;background:var(--border);margin-bottom:2rem}
+.result-score-wrap{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border);margin-bottom:2rem}
 .r-card{background:var(--bg2);padding:1.75rem}
 .r-card-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
-.r-card-val{font-family:var(--fd);font-size:48px;line-height:.9;color:var(--accent)}
+.r-card-val{font-family:var(--fd);font-size:44px;line-height:.9;color:var(--accent)}
 .r-card-sub{font-size:12px;color:var(--muted);margin-top:.4rem;font-weight:300}
 .result-breakdown{margin-bottom:2rem}
-.rb-row{display:flex;align-items:center;justify-content:space-between;padding:.9rem 0;border-bottom:1px solid var(--border)}
+.rb-row{display:flex;align-items:flex-start;justify-content:space-between;padding:.9rem 0;border-bottom:1px solid var(--border);gap:1rem}
 .rb-row:last-child{border-bottom:none}
-.rb-name{font-size:13px;color:var(--text);font-weight:400}
-.rb-range{font-family:var(--fm);font-size:12px;color:var(--accent);letter-spacing:.05em}
+.rb-name{font-size:13px;color:var(--text)}
+.rb-range{font-family:var(--fm);font-size:12px;color:var(--accent);text-align:right}
 .ai-response-wrap{background:rgba(212,245,60,.04);border:1px solid rgba(212,245,60,.15);padding:1.75rem;margin-bottom:2rem}
 .ai-lbl{font-family:var(--fm);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--accent);margin-bottom:.75rem;display:flex;align-items:center;gap:.5rem}
-.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
+.ai-lbl::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite;flex-shrink:0}
 .ai-text{font-size:13px;line-height:1.8;color:var(--muted);font-weight:300}
 .ai-text strong{color:var(--text);font-weight:500}
 .loading-dots{display:inline-flex;gap:4px;align-items:center}
@@ -206,49 +326,93 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 .loading-dots span:nth-child(2){animation-delay:.15s}
 .loading-dots span:nth-child(3){animation-delay:.3s}
 @keyframes ldot{0%,80%,100%{transform:scale(.5);opacity:.4}40%{transform:scale(1);opacity:1}}
-.result-cta{display:flex;gap:1rem;padding-top:1rem}
+.result-cta{display:flex;gap:1rem;flex-wrap:wrap;padding-top:1rem}
 .btn-reset{background:none;border:1px solid var(--border2);color:var(--muted);font-size:10px;letter-spacing:.18em;text-transform:uppercase;padding:.7rem 1.25rem;cursor:pointer;font-family:var(--fb);font-weight:600;transition:all .2s}
 .btn-reset:hover{border-color:var(--text);color:var(--text)}
 
-/* WORK */
-.work-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border)}
-.wc{background:var(--bg);padding:3rem;display:flex;flex-direction:column;justify-content:space-between;min-height:340px;position:relative;overflow:hidden;transition:background .3s;cursor:pointer}
-.wc.span2{grid-column:span 2;flex-direction:row;align-items:center;min-height:260px;gap:4rem}
-.wc:hover{background:var(--bg2)}
-.wc-num{font-family:var(--fm);font-size:9px;letter-spacing:.25em;color:var(--muted)}
-.wc-title{font-family:var(--fd);font-size:48px;line-height:.9;letter-spacing:.01em;color:var(--text);margin:1.75rem 0 .7rem}
-.wc.span2 .wc-title{font-size:72px;margin:0;flex:1}
-.wc-tag{font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);font-family:var(--fm)}
-.wc-meta{display:flex;align-items:center;justify-content:space-between}
-.wc-arr{width:38px;height:38px;border:1px solid var(--border2);display:flex;align-items:center;justify-content:center;font-size:15px;color:var(--muted);transition:all .2s;flex-shrink:0}
-.wc:hover .wc-arr{background:var(--accent);border-color:var(--accent);color:var(--bg);transform:translate(2px,-2px)}
-.wc-bg{position:absolute;bottom:-1rem;right:-0.5rem;font-family:var(--fd);font-size:110px;color:rgba(240,237,230,.025);line-height:1;pointer-events:none}
-
 /* PROCESS */
 .proc-list{border:1px solid var(--border)}
-.proc-row{display:grid;grid-template-columns:72px 220px 1fr;align-items:center;padding:1.75rem 2.5rem;border-bottom:1px solid var(--border);gap:2.5rem;transition:background .2s;cursor:default}
+.proc-row{display:grid;grid-template-columns:64px 200px 1fr;align-items:center;padding:1.75rem 2.5rem;border-bottom:1px solid var(--border);gap:2rem;transition:background .2s}
 .proc-row:last-child{border-bottom:none}
 .proc-row:hover{background:var(--bg2)}
-.proc-n{font-family:var(--fd);font-size:44px;line-height:1;color:rgba(240,237,230,.1)}
-.proc-name{font-family:var(--fd);font-size:26px;letter-spacing:.03em;color:var(--text)}
+.proc-n{font-family:var(--fd);font-size:40px;line-height:1;color:rgba(240,237,230,.1)}
+.proc-name{font-family:var(--fd);font-size:24px;letter-spacing:.03em;color:var(--text)}
 .proc-desc{font-size:13px;line-height:1.65;color:var(--muted);font-weight:300}
 
 /* CTA */
 .cta-sec{padding:9rem 3rem;text-align:center;border-top:1px solid var(--border);position:relative;overflow:hidden}
-.cta-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 110%,rgba(212,245,60,0.07) 0%,transparent 70%);pointer-events:none}
+.cta-glow{position:absolute;inset:0;background:radial-gradient(ellipse 60% 55% at 50% 110%,rgba(212,245,60,.07) 0%,transparent 70%);pointer-events:none}
 .cta-tag{font-family:var(--fm);font-size:9px;letter-spacing:.38em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem}
-.cta-h{font-family:var(--fd);font-size:clamp(52px,8.5vw,112px);line-height:.9;letter-spacing:-.01em;margin-bottom:.75rem}
-.cta-h .ci{font-family:var(--fs);font-style:italic;color:var(--accent);font-size:clamp(48px,8vw,104px)}
-.cta-sub{font-size:14px;color:var(--muted);line-height:1.75;max-width:380px;margin:0 auto 2.75rem;font-weight:300}
+.cta-h{font-family:var(--fd);font-size:clamp(44px,8.5vw,112px);line-height:.9;letter-spacing:-.01em;margin-bottom:.75rem}
+.cta-h .ci{font-family:var(--fs);font-style:italic;color:var(--accent);font-size:clamp(40px,8vw,104px)}
+.cta-sub{font-size:14px;color:var(--muted);line-height:1.75;max-width:400px;margin:0 auto 2.75rem;font-weight:300}
 .cta-btns{display:flex;align-items:center;justify-content:center;gap:1.25rem;flex-wrap:wrap}
 
 /* FOOTER */
 footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
-.fl{font-family:var(--fd);font-size:16px;letter-spacing:.1em;color:var(--text)}
-.flinks{display:flex;gap:2rem;list-style:none}
+.fl{font-family:var(--fd);font-size:16px;letter-spacing:.1em}
+.flinks{display:flex;gap:2rem;list-style:none;flex-wrap:wrap}
 .flinks a{font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--muted);text-decoration:none;transition:color .2s;font-weight:500}
 .flinks a:hover{color:var(--text)}
 .fc{font-family:var(--fm);font-size:9px;color:var(--muted);letter-spacing:.1em}
+
+/* ══════ MOBILE ══════ */
+@media(max-width:1024px){
+  nav,footer{padding-left:2rem;padding-right:2rem}
+  .hero,.sec{padding-left:2rem;padding-right:2rem}
+  .stats-band,.tax-banner{padding-left:2rem;padding-right:2rem}
+  .est-header{padding:2.5rem 2.5rem 1.75rem}
+  .est-body{padding:2rem 2.5rem}
+  .nav-links{gap:1.75rem}
+}
+@media(max-width:768px){
+  nav{padding:1rem 1.5rem}
+  .nav-links,.nav-cta{display:none}
+  .nav-ham{display:flex}
+  .hero{padding:7rem 1.5rem 4rem;min-height:100svh;gap:3rem}
+  .hero-problems{grid-template-columns:1fr}
+  .hero-turn{flex-direction:column;align-items:flex-start;gap:2rem}
+  .scroll-ind{display:none}
+  .tax-banner{flex-direction:column;align-items:flex-start;gap:.75rem;padding:1.25rem 1.5rem}
+  .tax-badge{margin-left:0}
+  .sec{padding:4.5rem 1.5rem}
+  .sec-hdr{flex-direction:column;gap:1.5rem;margin-bottom:3rem}
+  .sec-sub{max-width:100%}
+  .elim-grid{grid-template-columns:1fr}
+  .elim-card{padding:2.25rem 1.75rem}
+  .elim-ghost{font-size:100px}
+  .stats-band{grid-template-columns:1fr 1fr;padding:2rem 1.5rem}
+  .stat-i{padding:1.5rem 1rem;border-right:none;border-bottom:1px solid rgba(10,10,8,.12)}
+  .stat-i:nth-child(odd){border-right:1px solid rgba(10,10,8,.12)}
+  .stat-i:nth-child(3),.stat-i:nth-child(4){border-bottom:none}
+  .about-wrap{grid-template-columns:1fr}
+  .about-left{border-right:none;border-bottom:1px solid var(--border);padding:2rem 1.5rem}
+  .about-right{padding:2rem 1.5rem}
+  .about-name{font-size:36px}
+  .about-name-block{flex-direction:column;align-items:flex-start;gap:.75rem}
+  .svc-grid{grid-template-columns:1fr}
+  .svc-card{border-right:none;border-bottom:1px solid var(--border)}
+  .svc-card:last-child{border-bottom:none}
+  .est-header{padding:2rem 1.5rem 1.5rem}
+  .est-body{padding:1.5rem}
+  .result-score-wrap{grid-template-columns:1fr}
+  .rb-row{flex-direction:column;gap:.25rem}
+  .proc-row{grid-template-columns:48px 1fr;padding:1.25rem 1.5rem;gap:1rem}
+  .proc-desc{grid-column:1/3}
+  .cta-sec{padding:5rem 1.5rem}
+  footer{padding:2rem 1.5rem;flex-direction:column;align-items:flex-start;gap:1.25rem}
+}
+@media(max-width:480px){
+  .hero,.sec{padding-left:1.25rem;padding-right:1.25rem}
+  .tax-banner,.stats-band{padding-left:1.25rem;padding-right:1.25rem}
+  .about-left,.about-right,.est-header,.est-body{padding:1.75rem 1.25rem}
+  .elim-card{padding:2rem 1.25rem}
+  .elim-ghost{font-size:80px}
+  .proc-row,.cta-sec,footer{padding-left:1.25rem;padding-right:1.25rem}
+  .step-dot{width:22px;height:22px;font-size:9px}
+  .step-line{max-width:24px}
+  .prob-card{padding:1.5rem 1.25rem}
+}
 </style>
 </head>
 <body>
@@ -256,70 +420,190 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 <div class="cur" id="cur"></div>
 <div class="cur-ring" id="curRing"></div>
 
-<!-- NAV -->
+<div class="nav-mobile" id="mobileNav">
+  <a href="#eliminate" onclick="closeNav()">What I Eliminate</a>
+  <a href="#services" onclick="closeNav()">Services</a>
+  <a href="#about" onclick="closeNav()">About</a>
+  <a href="#estimator" onclick="closeNav()">Estimator</a>
+  <a href="#process" onclick="closeNav()">Process</a>
+  <a href="#estimator" class="m-cta" onclick="closeNav()">Get an Estimate ↗</a>
+</div>
+
 <nav>
-  <div class="nav-brand">
-    <span class="b1">Doers</span>
-    <span class="b2">DiGiTaL</span>
-  </div>
+  <a href="#" class="nav-brand"><span class="b1">Doers</span><span class="b2">DiGiTaL</span></a>
   <ul class="nav-links">
-    <li><a href="#about">About</a></li>
+    <li><a href="#eliminate">What I Eliminate</a></li>
     <li><a href="#services">Services</a></li>
-    <li><a href="#work">Work</a></li>
+    <li><a href="#about">About</a></li>
     <li><a href="#estimator">Estimator</a></li>
     <li><a href="#process">Process</a></li>
   </ul>
   <a href="#estimator" class="nav-cta">Get an Estimate</a>
+  <button class="nav-ham" id="hamBtn" aria-label="Menu"><span></span><span></span><span></span></button>
 </nav>
 
-<!-- HERO -->
+<!-- ═══ HERO ═══ -->
 <section class="hero">
   <div class="hero-grid"></div>
   <div class="hero-glow"></div>
+  <div class="hero-glow2"></div>
+
+  <!-- eyebrow -->
   <div class="hero-eye">
     <div class="hero-dot"></div>
-    <span class="hero-eye-txt">Strategy · Brand · Build · AI — All from one founder</span>
+    <span class="hero-eye-txt">For small teams · Growing brands · Digital-first businesses</span>
   </div>
-  <div>
-    <div class="hero-titles">
-      <div class="hl"><span class="td">Founder's</span></div>
-      <div class="hl"><span class="ti">Co-Pilot</span></div>
-      <div class="hl"><span class="td">for Modern</span></div>
-      <div class="hl"><span class="to">Business.</span></div>
+
+  <!-- opener -->
+  <div class="hero-opener">
+    <span class="hero-opener-q"><span>Does any of this</span></span>
+    <span class="hero-opener-sub"><span>sound familiar?</span></span>
+  </div>
+
+  <!-- 4 problem cards -->
+  <div class="hero-problems">
+    <div class="prob-card">
+      <span class="prob-quote">"</span>
+      <div class="prob-text">We've tried agencies.<br>We get <em>decks, not results.</em></div>
+      <div class="prob-who">Growing business · SME</div>
+    </div>
+    <div class="prob-card">
+      <span class="prob-quote">"</span>
+      <div class="prob-text">Everyone's talking about AI.<br>I don't know what's <em>relevant for my business.</em></div>
+      <div class="prob-who">Any stage · Any industry</div>
+    </div>
+    <div class="prob-card">
+      <span class="prob-quote">"</span>
+      <div class="prob-text">We have good revenue but <em>no real marketing system</em> — it's all word of mouth.</div>
+      <div class="prob-who">Established business · D2C</div>
+    </div>
+    <div class="prob-card">
+      <span class="prob-quote">"</span>
+      <div class="prob-text">I keep spending on things that <em>don't move the needle.</em></div>
+      <div class="prob-who">Founder · Small team</div>
     </div>
   </div>
-  <div class="hero-bot">
-    <div class="hero-actions">
-      <a href="#estimator" class="btn-p">Estimate My Project ↗</a>
-      <a href="#about" class="btn-g">Meet Sudhanshu →</a>
+
+  <!-- the turn -->
+  <div class="hero-turn">
+    <div class="hero-turn-left">
+      <div class="hero-turn-label">You're in the right place</div>
+      <div class="hero-turn-h">I'm Sudhanshu.<br>I <em>eliminate</em> all four.</div>
+      <p class="hero-turn-sub">
+        Strategy, AI automation, and digital products —
+        <strong>built by someone who's been the marketer, the developer, and the founder.</strong>
+        No decks. No handoffs. Just work that moves the needle.
+      </p>
+      <div class="hero-actions">
+        <a href="#eliminate" class="btn-p">See How ↓</a>
+        <a href="#estimator" class="btn-g">Estimate my project →</a>
+      </div>
     </div>
-    <p class="hero-desc">
-      Most consultants can strategise. Most developers can build. <strong>Sudhanshu does both</strong> — brand thinking, marketing depth, and AI-powered execution, all in one engagement.
-    </p>
-    <div class="scroll-ind">
-      <div class="scroll-line"></div>
-      <span class="scroll-lbl">Scroll</span>
+    <div class="hero-turn-right">
+      <div class="scroll-ind">
+        <div class="scroll-line"></div>
+        <span class="scroll-lbl">Scroll</span>
+      </div>
     </div>
   </div>
 </section>
 
+<!-- PASSION BANNER -->
+<div class="tax-banner">
+  <div class="tax-left">
+    <div class="tax-icon">⚡</div>
+    <div>
+      <div class="tax-label">Core Mission</div>
+      <div class="tax-text">Passionate about helping businesses unlock the power of <em>AI Automations</em> — to save time, cut costs, and stay competitive.</div>
+    </div>
+  </div>
+  <div class="tax-badge">Sudhanshu · 18 Years · 3 Disciplines</div>
+</div>
+
 <!-- MARQUEE -->
 <div class="mq-wrap">
   <div class="mq-track">
-    <div class="mq-item"><span>Brand Strategy</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>AI Marketing Systems</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Communication Design</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Digital Products</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Startup Advisory</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Growth Systems</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Web Applications</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Brand Strategy</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>AI Marketing Systems</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Communication Design</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Digital Products</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Startup Advisory</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Growth Systems</span><div class="mq-dot"></div></div>
-    <div class="mq-item"><span>Web Applications</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Eliminate Guesswork</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>AI Automations</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Brand Clarity</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Cut Wasted Spend</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Real GTM Systems</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>No Decks. Just Results.</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Eliminate Guesswork</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>AI Automations</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Brand Clarity</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Cut Wasted Spend</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>Real GTM Systems</span><div class="mq-dot"></div></div>
+    <div class="mq-item"><span>No Decks. Just Results.</span><div class="mq-dot"></div></div>
+  </div>
+</div>
+
+<!-- WHAT I ELIMINATE -->
+<section class="sec" id="eliminate">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-tag">01 — The Real Problem</div>
+      <h2 class="sec-h">What I<br><em>Eliminate</em></h2>
+    </div>
+    <div class="sec-sub">Most businesses don't have a marketing problem. They have a <strong>clarity, system, and execution problem.</strong> Here's exactly what disappears when we work together.</div>
+  </div>
+  <div class="elim-grid">
+    <div class="elim-card">
+      <div class="elim-ghost">01</div>
+      <div class="elim-who">Small teams · No marketing system</div>
+      <div class="elim-pain">The<br>Guesswork</div>
+      <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
+      <p class="elim-result">You're winging your marketing every month. No pipeline, no system, no way to know what's working. <strong>I replace the guesswork with a repeatable marketing engine</strong> so growth stops depending on your mood or the month.</p>
+      <div class="elim-foot">Brand · Marketing System · Automation</div>
+    </div>
+    <div class="elim-card">
+      <div class="elim-ghost">02</div>
+      <div class="elim-who">Traditional businesses · Going digital</div>
+      <div class="elim-pain">The Wrong<br>Turns</div>
+      <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
+      <p class="elim-result">Spending on websites, ads, and tools that don't talk to each other — and don't convert. <strong>I map the right digital path before a single rupee goes to execution</strong> — so you stop paying for things that don't work.</p>
+      <div class="elim-foot">Digital Strategy · Right Stack · Clear Roadmap</div>
+    </div>
+    <div class="elim-card">
+      <div class="elim-ghost">03</div>
+      <div class="elim-who">D2C · E-commerce brands</div>
+      <div class="elim-pain">The Leaky<br>Bucket</div>
+      <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
+      <p class="elim-result">Spending on ads but the brand doesn't convert. Traffic arrives, most leaves. <strong>I fix the conversion layer</strong> — building the brand clarity and communication system that makes every ₹ of ad spend work harder.</p>
+      <div class="elim-foot">Brand Clarity · Conversion · Story</div>
+    </div>
+    <div class="elim-card">
+      <div class="elim-ghost">04</div>
+      <div class="elim-who">Tech startups · Product-first founders</div>
+      <div class="elim-pain">The "Build It"<br>Trap</div>
+      <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
+      <p class="elim-result">You built something real. But nobody knows it exists — or why they should care. <strong>I eliminate the "build it and they'll come" trap</strong> with GTM strategy, sharp messaging, and early traction systems your product deserves.</p>
+      <div class="elim-foot">GTM · Positioning · Launch Strategy</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<div class="stats-band" id="statsBand">
+  <div class="stat-i">
+    <div class="stat-n" data-target="18" data-suffix="+">0</div>
+    <div class="stat-outcome">Years spent in the problem</div>
+    <div class="stat-l">Marketing · Dev · Founding</div>
+  </div>
+  <div class="stat-i">
+    <div class="stat-n" data-target="47" data-suffix="+">0</div>
+    <div class="stat-outcome">Projects shipped on time</div>
+    <div class="stat-l">Strategy to live product</div>
+  </div>
+  <div class="stat-i">
+    <div class="stat-n" data-target="3" data-suffix="×">0</div>
+    <div class="stat-outcome">Avg. growth lift post-engagement</div>
+    <div class="stat-l">Measured across clients</div>
+  </div>
+  <div class="stat-i">
+    <div class="stat-n" data-target="100" data-suffix="%">0</div>
+    <div class="stat-outcome">Client retention year one</div>
+    <div class="stat-l">Because the work actually works</div>
   </div>
 </div>
 
@@ -327,10 +611,10 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 <section class="sec" id="about">
   <div class="sec-hdr">
     <div>
-      <div class="sec-tag">01 — The Person Behind It</div>
-      <h2 class="sec-h">Built by<br><em>Sudhanshu</em></h2>
+      <div class="sec-tag">03 — Why Sudhanshu</div>
+      <h2 class="sec-h">The Only One<br>Who's <em>Lived</em><br>All Four Sides</h2>
     </div>
-    <p class="sec-sub">18 years. Three disciplines. One integrated mind. This is what sets Doers Digital apart.</p>
+    <div class="sec-sub">Most people fix one thing. Sudhanshu has been the marketer, the developer, the AI builder, and the founder — simultaneously. That's why he sees problems others can't even diagnose.</div>
   </div>
   <div class="about-wrap">
     <div class="about-left">
@@ -338,66 +622,36 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
         <div class="about-avatar">S</div>
         <div>
           <div class="about-name">Sudhanshu</div>
-          <div class="about-title">Marketer · Developer · Founder</div>
+          <div class="about-title">Marketer · Developer · Founder · AI Builder</div>
         </div>
       </div>
-      <p class="about-bio">
-        I've spent <strong>18 years at the intersection of marketing, brand strategy, and technology</strong> — building startups, growing brands, and shipping digital products. I understand why customers buy, how products should feel, and how to actually build them.<br><br>
-        Most agencies split these disciplines across teams. I bring them together in a single, coherent engagement — which means <strong>faster decisions, tighter strategy, and products that actually convert.</strong>
-      </p>
-      <div class="about-stats">
-        <div>
-          <div class="about-stat-n">18+</div>
-          <div class="about-stat-l">Years Experience</div>
-        </div>
-        <div>
-          <div class="about-stat-n">3</div>
-          <div class="about-stat-l">Core Disciplines</div>
-        </div>
-        <div>
-          <div class="about-stat-n">∞</div>
-          <div class="about-stat-l">Curiosity for AI</div>
-        </div>
+      <div class="about-hook">"Most consultants fix <em>one</em> problem.<br>I fix the <em>system</em> that creates them all."</div>
+      <p class="about-bio">A brand agency doesn't touch your tech stack. A developer doesn't think about positioning. An AI vendor doesn't care about your GTM. You pay all three — and they still don't talk to each other.<br><br>I've spent <strong>18 years being all four simultaneously</strong> — building startups from scratch, running marketing at scale, shipping digital products, and building AI systems that eliminate the manual work entirely.<br><br>Which means I find where your system is broken, fix the root cause, and build something that runs without me.</p>
+      <div class="about-proof">
+        <div><div class="ap-n">18+</div><div class="ap-l">Years</div></div>
+        <div><div class="ap-n">4</div><div class="ap-l">Disciplines</div></div>
+        <div><div class="ap-n">1</div><div class="ap-l">Engagement</div></div>
       </div>
     </div>
     <div class="about-right">
-      <div class="about-right-head">Depth Across Every Layer</div>
-      <div>
-        <div class="skill-row">
-          <span class="skill-name">Brand & Marketing Strategy</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="--w:95%"></div></div>
-          <span class="skill-yr">18 yrs</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Communication Design</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="--w:88%"></div></div>
-          <span class="skill-yr">15 yrs</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Product Development</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="--w:80%"></div></div>
-          <span class="skill-yr">12 yrs</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">AI Implementation</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="--w:75%"></div></div>
-          <span class="skill-yr">Active</span>
-        </div>
-        <div class="skill-row">
-          <span class="skill-name">Startup Advisory</span>
-          <div class="skill-bar-wrap"><div class="skill-bar" style="--w:90%"></div></div>
-          <span class="skill-yr">10 yrs</span>
-        </div>
+      <div class="about-right-head">Three Problems. One Person.</div>
+      <div class="elim-pillar">
+        <div class="ep-num">01 — Strategy</div>
+        <div class="ep-title">Brand & Marketing</div>
+        <div class="ep-desc">Eliminates guesswork and wasted spend. Builds the positioning, messaging, and systems that make marketing repeatable.</div>
+        <div class="ep-tags"><span class="ep-tag">Brand Identity</span><span class="ep-tag">GTM</span><span class="ep-tag">Content Systems</span></div>
       </div>
-      <div class="about-tag-wrap">
-        <span class="tag">Brand Identity</span>
-        <span class="tag">Go-to-Market</span>
-        <span class="tag">LLM Integration</span>
-        <span class="tag">React / Node</span>
-        <span class="tag">SEO & Content</span>
-        <span class="tag">Growth Strategy</span>
-        <span class="tag">Pitch Decks</span>
-        <span class="tag">Automation</span>
+      <div class="elim-pillar">
+        <div class="ep-num">02 — Build</div>
+        <div class="ep-title">Digital Products</div>
+        <div class="ep-desc">Eliminates wrong turns and bad tech decisions. Ships web apps and platforms designed to convert from day one.</div>
+        <div class="ep-tags"><span class="ep-tag">Web Apps</span><span class="ep-tag">MVPs</span><span class="ep-tag">Conversion Design</span></div>
+      </div>
+      <div class="elim-pillar">
+        <div class="ep-num">03 — Intelligence</div>
+        <div class="ep-title">AI Automations</div>
+        <div class="ep-desc">Eliminates manual work and slow decisions. Builds AI workflows that save time, cut costs, and keep you competitive.</div>
+        <div class="ep-tags"><span class="ep-tag">LLM Integration</span><span class="ep-tag">Automation</span><span class="ep-tag">AI Ops</span></div>
       </div>
     </div>
   </div>
@@ -407,264 +661,112 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 <section class="sec" id="services">
   <div class="sec-hdr">
     <div>
-      <div class="sec-tag">02 — What I Do</div>
-      <h2 class="sec-h">Services That<br><em>Actually Move</em><br>the Needle</h2>
+      <div class="sec-tag">02 — How I Fix It</div>
+      <h2 class="sec-h">Three Ways<br>I <em>Fix It</em></h2>
     </div>
-    <p class="sec-sub">Not a menu of deliverables. A set of integrated capabilities built around your business outcome.</p>
+    <div class="sec-sub">Not a menu of deliverables. Three integrated levers — each one targeting a specific kind of business pain.</div>
   </div>
   <div class="svc-grid">
     <div class="svc-card">
       <div class="svc-n-big">01</div>
-      <div class="svc-ico">Strategy Layer</div>
-      <div class="svc-name">Brand &<br>Marketing</div>
-      <p class="svc-desc">From brand architecture and positioning to full-funnel marketing strategy — built for businesses that need clarity before they spend.</p>
-      <div class="svc-pills">
-        <span class="svc-pill">Brand Identity</span>
-        <span class="svc-pill">GTM Strategy</span>
-        <span class="svc-pill">Content Systems</span>
-        <span class="svc-pill">Comms Design</span>
-      </div>
+      <div class="svc-ico">Removes → Confusion & Guesswork</div>
+      <div class="svc-name">Brand &<br>Strategy</div>
+      <div class="svc-outcome">You stop → Winging it every month</div>
+      <p class="svc-desc">Brand architecture, positioning, and marketing systems that give your business a repeatable engine — not just a one-time campaign.</p>
+      <div class="svc-pills"><span class="svc-pill">Brand Identity</span><span class="svc-pill">GTM Strategy</span><span class="svc-pill">Marketing Systems</span><span class="svc-pill">Messaging</span></div>
       <a href="#estimator" class="svc-lnk">Estimate Cost →</a>
     </div>
     <div class="svc-card">
       <div class="svc-n-big">02</div>
-      <div class="svc-ico">Build Layer</div>
+      <div class="svc-ico">Removes → Wrong tools & wrong turns</div>
       <div class="svc-name">Digital<br>Products</div>
-      <p class="svc-desc">Web apps, SaaS tools, and brand-led digital platforms — designed to convert, built to scale, shipped on time.</p>
-      <div class="svc-pills">
-        <span class="svc-pill">Web Apps</span>
-        <span class="svc-pill">Dashboards</span>
-        <span class="svc-pill">Landing Pages</span>
-        <span class="svc-pill">MVPs</span>
-      </div>
+      <div class="svc-outcome">You stop → Paying for things that don't work</div>
+      <p class="svc-desc">Web apps, SaaS tools, and conversion-led platforms — designed around your customer journey, built to perform from day one.</p>
+      <div class="svc-pills"><span class="svc-pill">Web Apps</span><span class="svc-pill">MVPs</span><span class="svc-pill">Landing Pages</span><span class="svc-pill">Dashboards</span></div>
       <a href="#estimator" class="svc-lnk">Estimate Cost →</a>
     </div>
     <div class="svc-card">
       <div class="svc-n-big">03</div>
-      <div class="svc-ico">Intelligence Layer</div>
-      <div class="svc-name">AI-Powered<br>Systems</div>
-      <p class="svc-desc">Custom AI integrations, intelligent automation, and marketing systems powered by LLMs — built for real business workflows, not demos.</p>
-      <div class="svc-pills">
-        <span class="svc-pill">LLM Integration</span>
-        <span class="svc-pill">Automation</span>
-        <span class="svc-pill">AI Content Ops</span>
-        <span class="svc-pill">Data Pipelines</span>
-      </div>
+      <div class="svc-ico">Removes → Manual work & slow decisions</div>
+      <div class="svc-name">AI<br>Automations</div>
+      <div class="svc-outcome">You stop → Doing by hand what a system can do</div>
+      <p class="svc-desc">Custom AI workflows that save hours, cut costs, and keep you competitive — built for real business processes, not demos.</p>
+      <div class="svc-pills"><span class="svc-pill">Workflow Automation</span><span class="svc-pill">LLM Integration</span><span class="svc-pill">AI Content Ops</span><span class="svc-pill">Data Pipelines</span></div>
       <a href="#estimator" class="svc-lnk">Estimate Cost →</a>
     </div>
   </div>
 </section>
 
-<!-- STATS -->
-<div class="stats-band">
-  <div class="stat-i"><div class="stat-n">18+</div><div class="stat-l">Years in the Field</div></div>
-  <div class="stat-i"><div class="stat-n">3×</div><div class="stat-l">Avg. Growth Lift</div></div>
-  <div class="stat-i"><div class="stat-n">47+</div><div class="stat-l">Projects Shipped</div></div>
-  <div class="stat-i"><div class="stat-n">100%</div><div class="stat-l">Client Retention Yr1</div></div>
-</div>
-
-<!-- LEAD MAGNET: AI COST ESTIMATOR -->
+<!-- ESTIMATOR -->
 <section class="sec" id="estimator">
   <div class="sec-hdr">
     <div>
-      <div class="sec-tag">03 — Free Tool</div>
-      <h2 class="sec-h">Project Cost<br><em>Estimator</em></h2>
+      <div class="sec-tag">04 — Free Tool</div>
+      <h2 class="sec-h">What Will It<br>Cost to <em>Fix It?</em></h2>
     </div>
-    <p class="sec-sub">Answer 6 questions. Get an AI-generated scoping report with realistic cost ranges — instantly, no sales call required.</p>
+    <div class="sec-sub">6 questions. AI-generated scope + realistic cost range. No sales call required.</div>
   </div>
-
   <div class="estimator-wrap">
     <div class="est-header">
-      <div>
-        <div class="est-badge">✦ AI-Powered Tool</div>
-        <div class="est-title">What Will Your<br>Project Cost?</div>
-        <p class="est-sub">This estimator uses AI to analyse your inputs and generate a tailored scope + budget range for your project. Takes under 2 minutes.</p>
-      </div>
+      <div class="est-badge">✦ AI-Powered — Instant Result</div>
+      <div class="est-title">Project Cost Estimator</div>
+      <p class="est-sub">Tell me what you're trying to fix. Get a tailored scope and realistic budget range in under 2 minutes.</p>
     </div>
     <div class="est-body">
-
-      <!-- Step indicator -->
       <div class="step-ind" id="stepInd"></div>
-
-      <!-- Questions -->
       <div id="questions">
-        <!-- Q1 -->
-        <div class="q-block active" data-q="0">
-          <div class="q-label">Question 1 of 6</div>
-          <div class="q-text">What type of project are you looking to build?</div>
-          <div class="q-opts">
-            <div class="q-opt" data-val="Brand Strategy & Identity" data-cost="150,000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Brand Strategy & Identity</span><span class="q-opt-val">Strategy</span>
-            </div>
-            <div class="q-opt" data-val="Marketing System & Campaigns" data-cost="100,000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Marketing System & Campaigns</span><span class="q-opt-val">Marketing</span>
-            </div>
-            <div class="q-opt" data-val="Digital Product / Web App" data-cost="300,000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Digital Product / Web App</span><span class="q-opt-val">Build</span>
-            </div>
-            <div class="q-opt" data-val="AI Integration & Automation" data-cost="250,000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">AI Integration & Automation</span><span class="q-opt-val">AI</span>
-            </div>
-            <div class="q-opt" data-val="Full-Stack (Strategy + Build + AI)" data-cost="600,000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Full-Stack (Strategy + Build + AI)</span><span class="q-opt-val">Flagship</span>
-            </div>
-          </div>
-        </div>
-        <!-- Q2 -->
-        <div class="q-block" data-q="1">
-          <div class="q-label">Question 2 of 6</div>
-          <div class="q-text">How would you describe your business stage?</div>
-          <div class="q-opts">
-            <div class="q-opt" data-val="Pre-launch / Idea Stage" data-cost="0.7">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Pre-launch / Idea Stage</span><span class="q-opt-val">Early</span>
-            </div>
-            <div class="q-opt" data-val="Early-stage with some customers" data-cost="0.85">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Early-stage with some customers</span><span class="q-opt-val">Seed</span>
-            </div>
-            <div class="q-opt" data-val="Growing business (1–5 crore revenue)" data-cost="1.0">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Growing business (₹1–5 Cr revenue)</span><span class="q-opt-val">Growth</span>
-            </div>
-            <div class="q-opt" data-val="Established SME (5+ crore revenue)" data-cost="1.2">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Established SME (₹5+ Cr revenue)</span><span class="q-opt-val">Scale</span>
-            </div>
-          </div>
-        </div>
-        <!-- Q3 -->
-        <div class="q-block" data-q="2">
-          <div class="q-label">Question 3 of 6</div>
-          <div class="q-text">What's the primary goal of this project?</div>
-          <div class="q-opts">
-            <div class="q-opt" data-val="Build brand awareness & credibility" data-cost="awareness">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Build brand awareness & credibility</span>
-            </div>
-            <div class="q-opt" data-val="Generate leads & drive conversions" data-cost="leads">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Generate leads & drive conversions</span>
-            </div>
-            <div class="q-opt" data-val="Launch or scale a digital product" data-cost="product">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Launch or scale a digital product</span>
-            </div>
-            <div class="q-opt" data-val="Automate internal processes with AI" data-cost="automation">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Automate internal processes with AI</span>
-            </div>
-            <div class="q-opt" data-val="Full business transformation" data-cost="transformation">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Full business transformation</span>
-            </div>
-          </div>
-        </div>
-        <!-- Q4 -->
-        <div class="q-block" data-q="3">
-          <div class="q-label">Question 4 of 6</div>
-          <div class="q-text">What's your ideal timeline to launch?</div>
-          <div class="q-opts">
-            <div class="q-opt" data-val="ASAP — under 4 weeks" data-cost="1.35">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">ASAP — under 4 weeks</span><span class="q-opt-val">Rush</span>
-            </div>
-            <div class="q-opt" data-val="1–2 months" data-cost="1.1">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">1–2 months</span><span class="q-opt-val">Standard</span>
-            </div>
-            <div class="q-opt" data-val="2–4 months" data-cost="1.0">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">2–4 months</span><span class="q-opt-val">Comfortable</span>
-            </div>
-            <div class="q-opt" data-val="4+ months / flexible" data-cost="0.9">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">4+ months / flexible</span><span class="q-opt-val">Relaxed</span>
-            </div>
-          </div>
-        </div>
-        <!-- Q5 -->
-        <div class="q-block" data-q="4">
-          <div class="q-label">Question 5 of 6</div>
-          <div class="q-text">Do you have existing brand assets or a brief?</div>
-          <div class="q-opts">
-            <div class="q-opt" data-val="Starting from scratch — nothing yet" data-cost="1.25">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Starting from scratch — nothing yet</span>
-            </div>
-            <div class="q-opt" data-val="Have a rough idea, no formal docs" data-cost="1.1">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Have a rough idea, no formal docs</span>
-            </div>
-            <div class="q-opt" data-val="Basic brand kit exists (logo, colours)" data-cost="1.0">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Basic brand kit exists (logo, colours)</span>
-            </div>
-            <div class="q-opt" data-val="Full brief, brand guidelines, clear spec" data-cost="0.85">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Full brief, brand guidelines, clear spec</span>
-            </div>
-          </div>
-        </div>
-        <!-- Q6 -->
-        <div class="q-block" data-q="5">
-          <div class="q-label">Question 6 of 6</div>
-          <div class="q-text">What's your approximate budget range?</div>
-          <div class="q-opts">
-            <div class="q-opt" data-val="Under ₹50,000" data-cost="50000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">Under ₹50,000</span>
-            </div>
-            <div class="q-opt" data-val="₹50,000 – ₹1,50,000" data-cost="100000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">₹50,000 – ₹1,50,000</span>
-            </div>
-            <div class="q-opt" data-val="₹1,50,000 – ₹5,00,000" data-cost="325000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">₹1,50,000 – ₹5,00,000</span>
-            </div>
-            <div class="q-opt" data-val="₹5,00,000 – ₹15,00,000" data-cost="1000000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">₹5,00,000 – ₹15,00,000</span>
-            </div>
-            <div class="q-opt" data-val="₹15,00,000+" data-cost="2000000">
-              <div class="q-opt-radio"></div><span class="q-opt-txt">₹15,00,000+</span>
-            </div>
-          </div>
-        </div>
+        <div class="q-block active" data-q="0"><div class="q-label">Question 1 of 6</div><div class="q-text">Which problem are you solving?</div><div class="q-opts">
+          <div class="q-opt" data-val="Brand Strategy & Identity" data-cost="150000"><div class="q-opt-radio"></div><span class="q-opt-txt">Eliminate guesswork — build a real brand & marketing system</span><span class="q-opt-val">Strategy</span></div>
+          <div class="q-opt" data-val="Digital Product / Web App" data-cost="300000"><div class="q-opt-radio"></div><span class="q-opt-txt">Stop wasting money on wrong tools — build the right product</span><span class="q-opt-val">Build</span></div>
+          <div class="q-opt" data-val="AI Automation & Workflows" data-cost="250000"><div class="q-opt-radio"></div><span class="q-opt-txt">Stop doing manually what AI can automate</span><span class="q-opt-val">AI</span></div>
+          <div class="q-opt" data-val="GTM & Launch Strategy" data-cost="120000"><div class="q-opt-radio"></div><span class="q-opt-txt">Escape the "build it" trap — get a real go-to-market</span><span class="q-opt-val">GTM</span></div>
+          <div class="q-opt" data-val="Full-Stack (Strategy + Build + AI)" data-cost="600000"><div class="q-opt-radio"></div><span class="q-opt-txt">All of the above — full transformation</span><span class="q-opt-val">Flagship</span></div>
+        </div></div>
+        <div class="q-block" data-q="1"><div class="q-label">Question 2 of 6</div><div class="q-text">What stage is your business at?</div><div class="q-opts">
+          <div class="q-opt" data-val="Pre-launch / Idea Stage" data-cost="0.7"><div class="q-opt-radio"></div><span class="q-opt-txt">Pre-launch / Idea Stage</span><span class="q-opt-val">Early</span></div>
+          <div class="q-opt" data-val="Early-stage with some customers" data-cost="0.85"><div class="q-opt-radio"></div><span class="q-opt-txt">Early-stage with some customers</span><span class="q-opt-val">Seed</span></div>
+          <div class="q-opt" data-val="Growing business (₹1–5 Cr revenue)" data-cost="1.0"><div class="q-opt-radio"></div><span class="q-opt-txt">Growing business (₹1–5 Cr revenue)</span><span class="q-opt-val">Growth</span></div>
+          <div class="q-opt" data-val="Established SME (₹5+ Cr revenue)" data-cost="1.2"><div class="q-opt-radio"></div><span class="q-opt-txt">Established SME (₹5+ Cr revenue)</span><span class="q-opt-val">Scale</span></div>
+        </div></div>
+        <div class="q-block" data-q="2"><div class="q-label">Question 3 of 6</div><div class="q-text">What does success look like?</div><div class="q-opts">
+          <div class="q-opt" data-val="A repeatable marketing pipeline that runs without me" data-cost="pipeline"><div class="q-opt-radio"></div><span class="q-opt-txt">A repeatable marketing pipeline that runs without me</span></div>
+          <div class="q-opt" data-val="A product live and converting customers" data-cost="product"><div class="q-opt-radio"></div><span class="q-opt-txt">A product live and converting customers</span></div>
+          <div class="q-opt" data-val="Hours saved and costs cut through AI automation" data-cost="automation"><div class="q-opt-radio"></div><span class="q-opt-txt">Hours saved and costs cut through AI automation</span></div>
+          <div class="q-opt" data-val="Real traction and paying customers" data-cost="traction"><div class="q-opt-radio"></div><span class="q-opt-txt">Real traction and paying customers for my product</span></div>
+        </div></div>
+        <div class="q-block" data-q="3"><div class="q-label">Question 4 of 6</div><div class="q-text">How urgently do you need this solved?</div><div class="q-opts">
+          <div class="q-opt" data-val="ASAP — this is costing me every week" data-cost="1.35"><div class="q-opt-radio"></div><span class="q-opt-txt">ASAP — this is costing me every week</span><span class="q-opt-val">Rush</span></div>
+          <div class="q-opt" data-val="Within 1–2 months" data-cost="1.1"><div class="q-opt-radio"></div><span class="q-opt-txt">Within 1–2 months</span><span class="q-opt-val">Standard</span></div>
+          <div class="q-opt" data-val="2–4 months is fine" data-cost="1.0"><div class="q-opt-radio"></div><span class="q-opt-txt">2–4 months is fine</span><span class="q-opt-val">Comfortable</span></div>
+          <div class="q-opt" data-val="No hard deadline" data-cost="0.9"><div class="q-opt-radio"></div><span class="q-opt-txt">No hard deadline</span><span class="q-opt-val">Flexible</span></div>
+        </div></div>
+        <div class="q-block" data-q="4"><div class="q-label">Question 5 of 6</div><div class="q-text">What do you already have?</div><div class="q-opts">
+          <div class="q-opt" data-val="Nothing yet — starting from zero" data-cost="1.25"><div class="q-opt-radio"></div><span class="q-opt-txt">Nothing yet — starting from zero</span></div>
+          <div class="q-opt" data-val="A rough idea but no docs or assets" data-cost="1.1"><div class="q-opt-radio"></div><span class="q-opt-txt">A rough idea but no docs or assets</span></div>
+          <div class="q-opt" data-val="Basic brand / existing product to build on" data-cost="1.0"><div class="q-opt-radio"></div><span class="q-opt-txt">Basic brand / existing product to build on</span></div>
+          <div class="q-opt" data-val="Full brief, clear spec, ready to build" data-cost="0.85"><div class="q-opt-radio"></div><span class="q-opt-txt">Full brief, clear spec, ready to build</span></div>
+        </div></div>
+        <div class="q-block" data-q="5"><div class="q-label">Question 6 of 6</div><div class="q-text">What's your budget range?</div><div class="q-opts">
+          <div class="q-opt" data-val="Under ₹50,000" data-cost="50000"><div class="q-opt-radio"></div><span class="q-opt-txt">Under ₹50,000</span></div>
+          <div class="q-opt" data-val="₹50,000 – ₹1,50,000" data-cost="100000"><div class="q-opt-radio"></div><span class="q-opt-txt">₹50,000 – ₹1,50,000</span></div>
+          <div class="q-opt" data-val="₹1,50,000 – ₹5,00,000" data-cost="325000"><div class="q-opt-radio"></div><span class="q-opt-txt">₹1,50,000 – ₹5,00,000</span></div>
+          <div class="q-opt" data-val="₹5,00,000 – ₹15,00,000" data-cost="1000000"><div class="q-opt-radio"></div><span class="q-opt-txt">₹5,00,000 – ₹15,00,000</span></div>
+          <div class="q-opt" data-val="₹15,00,000+" data-cost="2000000"><div class="q-opt-radio"></div><span class="q-opt-txt">₹15,00,000+</span></div>
+        </div></div>
       </div>
-
-      <!-- RESULT -->
       <div class="result-block" id="resultBlock">
         <div class="result-score-wrap" id="scoreWrap"></div>
         <div class="result-breakdown" id="breakdownWrap"></div>
-        <div class="ai-response-wrap">
-          <div class="ai-lbl">AI Analysis by Sudhanshu's Engine</div>
-          <div class="ai-text" id="aiText"><div class="loading-dots"><span></span><span></span><span></span></div></div>
-        </div>
+        <div class="ai-response-wrap"><div class="ai-lbl">Sudhanshu's AI Analysis</div><div class="ai-text" id="aiText"><div class="loading-dots"><span></span><span></span><span></span></div></div></div>
         <div class="result-cta">
           <a href="mailto:hello@doers.digital" class="btn-p" style="font-size:11px;padding:.8rem 1.5rem">Book a Strategy Call ↗</a>
           <button class="btn-reset" id="resetBtn">Start Over</button>
         </div>
       </div>
-
-      <!-- Nav -->
       <div class="est-nav" id="estNav">
         <button class="est-back" id="backBtn">← Back</button>
         <button class="est-next" id="nextBtn" disabled>Continue →</button>
       </div>
-    </div>
-  </div>
-</section>
-
-<!-- WORK -->
-<section class="sec" id="work">
-  <div class="sec-hdr">
-    <div>
-      <div class="sec-tag">04 — Selected Work</div>
-      <h2 class="sec-h">Projects That<br><em>Shipped</em></h2>
-    </div>
-    <p class="sec-sub">Real work, real results. Built for founders and small businesses ready to move.</p>
-  </div>
-  <div class="work-grid">
-    <div class="wc span2">
-      <div>
-        <div class="wc-num">Featured — Brand + Build</div>
-        <div class="wc-tag">Brand Strategy · Web App · AI</div>
-      </div>
-      <div class="wc-title">Pulse<br>Analytics</div>
-      <div class="wc-arr">↗</div>
-    </div>
-    <div class="wc">
-      <div class="wc-bg">02</div>
-      <div class="wc-num">Project 02</div>
-      <div class="wc-title">Signal<br>CRM</div>
-      <div class="wc-meta"><span class="wc-tag">Product · Marketing</span><div class="wc-arr">↗</div></div>
-    </div>
-    <div class="wc">
-      <div class="wc-bg">03</div>
-      <div class="wc-num">Project 03</div>
-      <div class="wc-title">Drift<br>Labs</div>
-      <div class="wc-meta"><span class="wc-tag">Brand · AI Systems</span><div class="wc-arr">↗</div></div>
     </div>
   </div>
 </section>
@@ -676,29 +778,13 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="sec-tag">05 — How I Work</div>
       <h2 class="sec-h">No Fluff.<br><em>Just Progress.</em></h2>
     </div>
-    <p class="sec-sub">A founder-paced process — tight, transparent, and accountable to results, not hours.</p>
+    <div class="sec-sub">Founder-paced. Transparent. Accountable to outcomes, not hours logged.</div>
   </div>
   <div class="proc-list">
-    <div class="proc-row">
-      <div class="proc-n">01</div>
-      <div class="proc-name">DISCOVER</div>
-      <div class="proc-desc">I dig into your business, audience, and goals before touching a brief. Most problems are framing problems — we fix those first.</div>
-    </div>
-    <div class="proc-row">
-      <div class="proc-n">02</div>
-      <div class="proc-name">STRATEGISE</div>
-      <div class="proc-desc">Brand position, product architecture, messaging — all locked before execution begins. You see the plan before a single pixel is pushed.</div>
-    </div>
-    <div class="proc-row">
-      <div class="proc-n">03</div>
-      <div class="proc-name">BUILD</div>
-      <div class="proc-desc">Weekly demos. Fast iterations. You're in the loop constantly — not just at the finish line. Decisions happen in days, not weeks.</div>
-    </div>
-    <div class="proc-row">
-      <div class="proc-n">04</div>
-      <div class="proc-name">LAUNCH & GROW</div>
-      <div class="proc-desc">Launch is the beginning. I stay involved through the first growth cycle — because shipping is only half the job.</div>
-    </div>
+    <div class="proc-row"><div class="proc-n">01</div><div class="proc-name">DIAGNOSE</div><div class="proc-desc">Before I recommend anything, I find the actual root cause. Most businesses are solving the wrong problem — we fix that first.</div></div>
+    <div class="proc-row"><div class="proc-n">02</div><div class="proc-name">STRATEGISE</div><div class="proc-desc">Brand, architecture, automation roadmap — all locked before execution begins. You see exactly what you're getting.</div></div>
+    <div class="proc-row"><div class="proc-n">03</div><div class="proc-name">BUILD</div><div class="proc-desc">Weekly demos. Fast iterations. You're in the loop every step. Decisions in days, not weeks.</div></div>
+    <div class="proc-row"><div class="proc-n">04</div><div class="proc-name">ELIMINATE & GROW</div><div class="proc-desc">I stay involved until the problem is actually gone — and the system runs without me.</div></div>
   </div>
 </section>
 
@@ -706,19 +792,18 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 <section class="cta-sec">
   <div class="cta-glow"></div>
   <p class="cta-tag">3 project slots open this quarter</p>
-  <h2 class="cta-h">Ready to Build<br><span class="ci">Something Real?</span></h2>
-  <p class="cta-sub">I work with a small number of businesses at a time — so every project gets my full thinking, not a junior team. If you're serious, let's talk.</p>
+  <h2 class="cta-h">Ready to Stop<br><span class="ci">Getting Decks?</span></h2>
+  <p class="cta-sub">I work with a small number of businesses at a time — focused, fast, and accountable to real results. If you're stuck, let's get you out.</p>
   <div class="cta-btns">
     <a href="#estimator" class="btn-p">Estimate My Project ↗</a>
     <a href="mailto:hello@doers.digital" class="btn-g">Email Sudhanshu directly</a>
   </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
   <div class="fl">Doers <span style="color:var(--accent)">DiGiTaL</span></div>
   <ul class="flinks">
-    <li><a href="#">Privacy</a></li>
+    <li><a href="https://doers.digital">doers.digital</a></li>
     <li><a href="#">LinkedIn</a></li>
     <li><a href="#">Twitter / X</a></li>
     <li><a href="#">Blog</a></li>
@@ -728,61 +813,93 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 
 <script>
 // CURSOR
-const cur = document.getElementById('cur'), ring = document.getElementById('curRing');
+const cur=document.getElementById('cur'),ring=document.getElementById('curRing');
 let mx=0,my=0,rx=0,ry=0;
 document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.transform=`translate(${mx-4}px,${my-4}px)`});
-(function animate(){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(animate)})();
-document.querySelectorAll('a,button,.q-opt,.wc').forEach(el=>{
+(function a(){rx+=(mx-rx-16)*.12;ry+=(my-ry-16)*.12;ring.style.transform=`translate(${rx}px,${ry}px)`;requestAnimationFrame(a)})();
+document.querySelectorAll('a,button,.elim-card,.elim-pillar,.prob-card').forEach(el=>{
   el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px'});
   el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px'});
 });
 
-// ESTIMATOR
-const TOTAL = 6;
-let current = 0;
-const answers = [];
+// HAMBURGER
+const ham=document.getElementById('hamBtn'),mNav=document.getElementById('mobileNav');
+ham.addEventListener('click',()=>{ham.classList.toggle('open');mNav.classList.toggle('open')});
+function closeNav(){ham.classList.remove('open');mNav.classList.remove('open')}
 
+// STATS COUNTER
+function easeOutQuart(t){return 1-(--t)*t*t*t}
+function animateCounter(el,target,suffix,duration){
+  let start=null;
+  const isFloat=String(target).includes('.');
+  function step(ts){
+    if(!start)start=ts;
+    const p=Math.min((ts-start)/duration,1);
+    const val=easeOutQuart(p)*target;
+    el.textContent=(isFloat?val.toFixed(1):Math.round(val))+suffix;
+    if(p<1)requestAnimationFrame(step);
+    else el.textContent=target+suffix;
+  }
+  requestAnimationFrame(step);
+}
+const statsObs=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      entry.target.querySelectorAll('.stat-n[data-target]').forEach(el=>{
+        const t=parseFloat(el.dataset.target),s=el.dataset.suffix||'';
+        animateCounter(el,t,s,2000);
+        delete el.dataset.target;
+      });
+      statsObs.unobserve(entry.target);
+    }
+  });
+},{threshold:0.25});
+const sb=document.getElementById('statsBand');
+if(sb)statsObs.observe(sb);
+
+// CARD REVEAL
+const cardObs=new IntersectionObserver(entries=>{
+  entries.forEach(entry=>{
+    if(entry.isIntersecting){
+      const delay=parseInt(entry.target.dataset.delay||0);
+      setTimeout(()=>entry.target.classList.add('revealed'),delay);
+      cardObs.unobserve(entry.target);
+    }
+  });
+},{threshold:0.1});
+document.querySelectorAll('.elim-card').forEach((c,i)=>{c.dataset.delay=i*100;cardObs.observe(c)});
+
+// ESTIMATOR
+const TOTAL=6;let current=0;const answers=[];
 function buildStepInd(){
-  const ind = document.getElementById('stepInd');
-  ind.innerHTML = '';
+  const ind=document.getElementById('stepInd');ind.innerHTML='';
   for(let i=0;i<TOTAL;i++){
     if(i>0){const l=document.createElement('div');l.className='step-line'+(i<=current?' done':'');ind.appendChild(l)}
     const d=document.createElement('div');
     d.className='step-dot'+(i===current?' active':i<current?' done':'');
-    d.textContent=i<current?'✓':(i+1);
-    ind.appendChild(d);
+    d.textContent=i<current?'✓':(i+1);ind.appendChild(d);
   }
 }
-
 function showQ(idx){
   document.querySelectorAll('.q-block').forEach(b=>b.classList.remove('active'));
-  const q=document.querySelector(`.q-block[data-q="${idx}"]`);
-  if(q)q.classList.add('active');
+  document.querySelector(`.q-block[data-q="${idx}"]`)?.classList.add('active');
   buildStepInd();
   document.getElementById('nextBtn').disabled=!answers[idx];
   document.getElementById('backBtn').style.visibility=idx===0?'hidden':'visible';
 }
-
 document.querySelectorAll('.q-opt').forEach(opt=>{
   opt.addEventListener('click',()=>{
-    const q=opt.closest('.q-block');
-    q.querySelectorAll('.q-opt').forEach(o=>o.classList.remove('sel'));
+    opt.closest('.q-block').querySelectorAll('.q-opt').forEach(o=>o.classList.remove('sel'));
     opt.classList.add('sel');
     answers[current]={val:opt.dataset.val,cost:opt.dataset.cost};
     document.getElementById('nextBtn').disabled=false;
   });
 });
-
 document.getElementById('nextBtn').addEventListener('click',()=>{
   if(!answers[current])return;
-  if(current<TOTAL-1){current++;showQ(current);}
-  else{showResult();}
+  if(current<TOTAL-1){current++;showQ(current);}else{showResult();}
 });
-
-document.getElementById('backBtn').addEventListener('click',()=>{
-  if(current>0){current--;showQ(current);}
-});
-
+document.getElementById('backBtn').addEventListener('click',()=>{if(current>0){current--;showQ(current);}});
 document.getElementById('resetBtn').addEventListener('click',()=>{
   answers.length=0;current=0;
   document.getElementById('resultBlock').classList.remove('show');
@@ -791,68 +908,36 @@ document.getElementById('resetBtn').addEventListener('click',()=>{
   document.querySelectorAll('.q-opt').forEach(o=>o.classList.remove('sel'));
   showQ(0);
 });
-
-function fmtINR(n){
-  if(n>=100000)return'₹'+(n/100000).toFixed(1)+' L';
-  return'₹'+n.toLocaleString('en-IN');
-}
-
+function fmtINR(n){return n>=100000?'₹'+(n/100000).toFixed(1)+' L':'₹'+n.toLocaleString('en-IN')}
 function showResult(){
   document.getElementById('questions').style.display='none';
   document.getElementById('estNav').style.display='none';
-  const rb=document.getElementById('resultBlock');
-  rb.classList.add('show');
+  document.getElementById('resultBlock').classList.add('show');
   buildStepInd();
-
-  const projectType=answers[0]?.val||'Digital Project';
-  const baseMap={'Brand Strategy & Identity':150000,'Marketing System & Campaigns':100000,'Digital Product / Web App':300000,'AI Integration & Automation':250000,'Full-Stack (Strategy + Build + AI)':600000};
-  let base=baseMap[projectType]||200000;
-  const stageMult=parseFloat(answers[1]?.cost)||1;
-  const timelineMult=parseFloat(answers[3]?.cost)||1;
-  const assetsMult=parseFloat(answers[4]?.cost)||1;
-  const budgetRef=parseInt(answers[5]?.cost)||200000;
-  let est=base*stageMult*timelineMult*assetsMult;
-  const lo=Math.round(est*0.8/5000)*5000;
-  const hi=Math.round(est*1.25/5000)*5000;
-  const weeks=timelineMult>1.2?'3–5 weeks':timelineMult>1?'6–10 weeks':'10–16 weeks';
-
+  const baseMap={'Brand Strategy & Identity':150000,'Digital Product / Web App':300000,'AI Automation & Workflows':250000,'GTM & Launch Strategy':120000,'Full-Stack (Strategy + Build + AI)':600000};
+  let base=baseMap[answers[0]?.val]||200000;
+  const sm=parseFloat(answers[1]?.cost)||1,tm=parseFloat(answers[3]?.cost)||1,am=parseFloat(answers[4]?.cost)||1;
+  let est=base*sm*tm*am;
+  const lo=Math.round(est*.8/5000)*5000,hi=Math.round(est*1.25/5000)*5000;
+  const wks=tm>1.2?'3–5 wks':tm>1?'6–10 wks':'10–16 wks';
   document.getElementById('scoreWrap').innerHTML=`
     <div class="r-card"><div class="r-card-lbl">Estimate Low</div><div class="r-card-val">${fmtINR(lo)}</div><div class="r-card-sub">Conservative scope</div></div>
     <div class="r-card"><div class="r-card-lbl">Estimate High</div><div class="r-card-val">${fmtINR(hi)}</div><div class="r-card-sub">Full scope</div></div>
-    <div class="r-card"><div class="r-card-lbl">Timeline</div><div class="r-card-val" style="font-size:32px">${weeks}</div><div class="r-card-sub">Estimated delivery</div></div>`;
-
-  const goal=answers[2]?.val||'growth';
-  const stage=answers[1]?.val||'growing business';
+    <div class="r-card"><div class="r-card-lbl">Timeline</div><div class="r-card-val" style="font-size:28px">${wks}</div><div class="r-card-sub">Est. delivery</div></div>`;
   document.getElementById('breakdownWrap').innerHTML=`
-    <div class="rb-row"><span class="rb-name">Project Type</span><span class="rb-range">${answers[0]?.val||'—'}</span></div>
+    <div class="rb-row"><span class="rb-name">Problem to solve</span><span class="rb-range">${answers[0]?.val||'—'}</span></div>
     <div class="rb-row"><span class="rb-name">Business Stage</span><span class="rb-range">${answers[1]?.val||'—'}</span></div>
-    <div class="rb-row"><span class="rb-name">Primary Goal</span><span class="rb-range">${answers[2]?.val||'—'}</span></div>
-    <div class="rb-row"><span class="rb-name">Timeline</span><span class="rb-range">${answers[3]?.val||'—'}</span></div>
-    <div class="rb-row"><span class="rb-name">Existing Assets</span><span class="rb-range">${answers[4]?.val||'—'}</span></div>`;
-
-  // AI call
-  const prompt=`You are Sudhanshu, a senior consultant with 18 years of experience in marketing, brand strategy, and digital product development. A potential client has just completed a project scoping quiz. Their answers: Project Type: ${answers[0]?.val}, Business Stage: ${answers[1]?.val}, Goal: ${answers[2]?.val}, Timeline: ${answers[3]?.val}, Assets: ${answers[4]?.val}, Budget: ${answers[5]?.val}. The estimated cost range is ${fmtINR(lo)} to ${fmtINR(hi)}.
-
-Write a brief, sharp 3–4 sentence personalised analysis (as Sudhanshu speaking directly) that: (1) validates their choice and shows you understand their situation, (2) flags one key risk or consideration for their specific combination of answers, (3) ends with one concrete next step they should take. Be direct, specific, and founder-to-founder in tone. Use <strong> tags to bold 2–3 key phrases. No fluff, no generic advice.`;
-
-  fetch('https://api.anthropic.com/v1/messages',{
-    method:'POST',
-    headers:{'Content-Type':'application/json'},
-    body:JSON.stringify({
-      model:'claude-sonnet-4-20250514',
-      max_tokens:1000,
-      messages:[{role:'user',content:prompt}]
-    })
-  }).then(r=>r.json()).then(d=>{
-    const txt=d.content?.find(b=>b.type==='text')?.text||'Analysis unavailable.';
-    document.getElementById('aiText').innerHTML=txt;
-  }).catch(()=>{
-    document.getElementById('aiText').innerHTML='<strong>Your project scope looks solid.</strong> Based on your inputs, the estimate above reflects the realistic range for a well-executed engagement. Book a strategy call to get a detailed breakdown.';
-  });
+    <div class="rb-row"><span class="rb-name">Success looks like</span><span class="rb-range">${answers[2]?.val||'—'}</span></div>
+    <div class="rb-row"><span class="rb-name">Urgency</span><span class="rb-range">${answers[3]?.val||'—'}</span></div>
+    <div class="rb-row"><span class="rb-name">What you have</span><span class="rb-range">${answers[4]?.val||'—'}</span></div>`;
+  const prompt=`You are Sudhanshu, a consultant with 18 years across marketing, brand strategy, digital product development, and AI automation. A prospect completed a scoping quiz. Problem: ${answers[0]?.val}, Stage: ${answers[1]?.val}, Success: ${answers[2]?.val}, Urgency: ${answers[3]?.val}, Assets: ${answers[4]?.val}, Budget: ${answers[5]?.val}. Range: ${fmtINR(lo)} to ${fmtINR(hi)}. Write 3–4 sharp sentences: (1) name the specific pain they're paying for, (2) flag one key risk if they don't act, (3) one concrete next step. Founder-to-founder tone. No preamble. Use <strong> tags on 2–3 key phrases.`;
+  fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-20250514',max_tokens:1000,messages:[{role:'user',content:prompt}]})})
+  .then(r=>r.json()).then(d=>{
+    const t=d.content?.find(b=>b.type==='text')?.text||'';
+    document.getElementById('aiText').innerHTML=t||'<strong>Your scope looks solid.</strong> Book a strategy call to get a detailed breakdown and a clear path forward.';
+  }).catch(()=>{document.getElementById('aiText').innerHTML='<strong>Your scope looks solid.</strong> Book a strategy call to get a detailed breakdown and clear path forward.'});
 }
-
-buildStepInd();
-showQ(0);
+buildStepInd();showQ(0);
 </script>
 </body>
 </html>
