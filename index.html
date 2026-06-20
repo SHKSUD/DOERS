@@ -88,50 +88,124 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 @keyframes sup{from{transform:translateY(110%);opacity:0}to{transform:translateY(0);opacity:1}}
 
 /* problem cards grid */
-.hero-problems{
-  display:grid;
-  grid-template-columns:repeat(2,1fr);
-  gap:1px;
-  background:var(--border);
-  animation:fadeUp .7s ease .4s both;
-}
 @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
 
-.prob-card{
-  background:var(--bg);
-  padding:1.75rem 2rem;
-  position:relative;overflow:hidden;
-  transition:background .3s;
-  cursor:default;
+/* Dynamic single-spot problem display — ORANGE "materialize" theme */
+.prob-stage{
+  --prob-accent:#ff7a3d;
+  --prob-glow:rgba(255,122,61,.35);
+  position:relative;
+  border:1px solid var(--border);
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 50%, rgba(255,122,61,.05) 0%, transparent 70%),
+    var(--bg);
+  padding:3rem;
+  min-height:240px;
+  display:flex;flex-direction:column;justify-content:center;
+  overflow:hidden;
+  animation:fadeUp .7s ease .4s both;
+  cursor:pointer;
+  border-color:rgba(255,122,61,.12);
 }
-.prob-card:hover{background:var(--bg2)}
-.prob-card::before{
+.prob-stage::before{
   content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,rgba(212,245,60,.04) 0%,transparent 60%);
-  opacity:0;transition:opacity .3s
+  background:linear-gradient(135deg,rgba(255,122,61,.05) 0%,transparent 60%);
+  pointer-events:none;
 }
-.prob-card:hover::before{opacity:1}
-.prob-quote{
-  font-family:var(--fd);font-size:48px;line-height:.7;
-  color:rgba(212,245,60,.15);
-  display:block;margin-bottom:.5rem;
-  transition:color .3s
+.prob-stage-quote{
+  font-family:var(--fd);font-size:64px;line-height:.6;
+  color:var(--prob-glow);
+  display:block;margin-bottom:1rem;
+  text-shadow:0 0 24px rgba(255,122,61,.25);
 }
-.prob-card:hover .prob-quote{color:rgba(212,245,60,.3)}
+
+/* scanline sweep element */
+.prob-scan{
+  position:absolute;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--prob-accent) 20%,#fff 50%,var(--prob-accent) 80%,transparent);
+  box-shadow:0 0 16px 2px var(--prob-glow), 0 0 32px 6px rgba(255,122,61,.15);
+  opacity:0;
+  pointer-events:none;
+  z-index:5;
+}
+.prob-scan.run{
+  animation:scanSweep .9s cubic-bezier(.4,0,.2,1);
+}
+@keyframes scanSweep{
+  0%{top:8%;opacity:0}
+  8%{opacity:1}
+  85%{opacity:1}
+  100%{top:92%;opacity:0}
+}
+
+.prob-slot{position:relative;min-height:120px}
+.prob-item{
+  position:absolute;inset:0;
+  opacity:0;
+  filter:blur(14px) brightness(1.8);
+  transform:scale(.97) translateY(6px);
+  pointer-events:none;
+}
+.prob-item.active{
+  pointer-events:auto;
+  position:relative;
+  animation:materializeIn .9s cubic-bezier(.22,1,.36,1) forwards;
+}
+.prob-item.exiting{
+  position:absolute;
+  animation:materializeOut .55s cubic-bezier(.55,0,.85,.35) forwards;
+}
+@keyframes materializeIn{
+  0%{opacity:0;filter:blur(16px) brightness(2.2);transform:scale(.96) translateY(8px)}
+  10%{opacity:.25}
+  35%{opacity:.7;filter:blur(6px) brightness(1.6);transform:scale(.985) translateY(3px)}
+  55%{opacity:.55;filter:blur(8px) brightness(1.8)}
+  75%{opacity:.95;filter:blur(2px) brightness(1.15);transform:scale(1) translateY(0)}
+  100%{opacity:1;filter:blur(0) brightness(1);transform:scale(1) translateY(0)}
+}
+@keyframes materializeOut{
+  0%{opacity:1;filter:blur(0) brightness(1);transform:scale(1) translateY(0)}
+  30%{opacity:.6;filter:blur(4px) brightness(1.6)}
+  100%{opacity:0;filter:blur(14px) brightness(2.2);transform:scale(.97) translateY(-6px)}
+}
+
 .prob-text{
-  font-size:clamp(14px,1.6vw,18px);
-  line-height:1.5;
+  font-size:clamp(20px,3.2vw,34px);
+  line-height:1.35;
   color:var(--text);
   font-weight:400;
-  margin-bottom:1rem;
+  margin-bottom:1.25rem;
+  font-family:var(--fb);
 }
-.prob-text em{color:var(--accent);font-style:normal;font-weight:600}
+.prob-text em{
+  color:var(--prob-accent);
+  font-style:normal;font-weight:600;
+  text-shadow:0 0 18px rgba(255,122,61,.35);
+}
 .prob-who{
   font-family:var(--fm);font-size:9px;letter-spacing:.22em;
   text-transform:uppercase;color:var(--muted);
   display:flex;align-items:center;gap:.5rem;
 }
-.prob-who::before{content:'';width:10px;height:1px;background:var(--muted)}
+.prob-who::before{content:'';width:10px;height:1px;background:var(--prob-accent)}
+
+/* progress bars — orange */
+.prob-progress{
+  display:flex;gap:.5rem;margin-top:2rem;
+}
+.prob-bar{
+  flex:1;height:2px;background:var(--border2);
+  position:relative;overflow:hidden;cursor:pointer;
+}
+.prob-bar-fill{
+  position:absolute;inset:0;
+  background:var(--prob-accent);
+  box-shadow:0 0 8px rgba(255,122,61,.5);
+  width:0%;
+  transform-origin:left;
+}
+.prob-bar.done .prob-bar-fill{width:100%;transition:none}
+.prob-bar.active .prob-bar-fill{width:100%;transition:width 3.5s linear}
 
 /* hero bottom — the turn */
 .hero-turn{
@@ -169,15 +243,7 @@ nav{position:fixed;top:0;left:0;right:0;z-index:500;display:flex;align-items:cen
 @keyframes sline{0%{transform:scaleY(0);transform-origin:top}50%{transform:scaleY(1);transform-origin:top}51%{transform:scaleY(1);transform-origin:bottom}100%{transform:scaleY(0);transform-origin:bottom}}
 .scroll-lbl{font-size:8px;letter-spacing:.38em;text-transform:uppercase;color:var(--muted);font-family:var(--fm);writing-mode:vertical-rl}
 
-/* PASSION BANNER */
-.tax-banner{padding:1.75rem 3rem;background:rgba(212,245,60,.05);border-top:1px solid rgba(212,245,60,.12);border-bottom:1px solid rgba(212,245,60,.12);display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap}
-.tax-left{display:flex;align-items:center;gap:1.25rem}
-.tax-icon{font-size:20px;flex-shrink:0}
-.tax-label{font-family:var(--fm);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--accent);margin-bottom:.25rem}
-.tax-text{font-size:clamp(13px,2vw,17px);color:var(--text);font-weight:400;line-height:1.3}
-.tax-text em{font-style:normal;color:var(--accent);font-weight:600}
-.tax-badge{display:inline-flex;align-items:center;gap:.5rem;border:1px solid rgba(212,245,60,.22);color:var(--accent);font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;padding:.4rem 1rem;white-space:nowrap;flex-shrink:0}
-.tax-badge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--accent);animation:blink 1.5s infinite}
+
 
 /* MARQUEE */
 .mq-wrap{border-top:1px solid var(--border);border-bottom:1px solid var(--border);padding:.9rem 0;background:var(--bg2);overflow:hidden}
@@ -356,6 +422,182 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 .flinks a:hover{color:var(--text)}
 .fc{font-family:var(--fm);font-size:9px;color:var(--muted);letter-spacing:.1em}
 
+
+
+/* Prob closer line */
+.prob-closer{
+  margin-top:1.5rem;
+  font-size:13px;
+  color:var(--muted);
+  font-weight:300;
+  line-height:1.6;
+  border-top:1px solid rgba(255,122,61,.15);
+  padding-top:1.25rem;
+}
+.prob-closer-link{
+  color:var(--prob-accent, #ff7a3d);
+  text-decoration:none;
+  font-weight:500;
+  border-bottom:1px solid rgba(255,122,61,.3);
+  transition:border-color .2s;
+}
+.prob-closer-link:hover{border-color:var(--prob-accent,#ff7a3d)}
+.prob-closer-cta{
+  color:var(--text);
+  text-decoration:none;
+  font-weight:600;
+  border-bottom:1px solid var(--border2);
+  transition:color .2s,border-color .2s;
+}
+.prob-closer-cta:hover{color:var(--accent);border-color:var(--accent)}
+
+/* ── BOOKING FORM SECTION ── */
+.book-wrap{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:0;
+  border:1px solid var(--border);
+}
+.book-left{
+  padding:3.5rem;
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;justify-content:space-between;gap:2rem;
+}
+.book-label{
+  font-family:var(--fm);font-size:9px;letter-spacing:.28em;
+  text-transform:uppercase;color:var(--accent);margin-bottom:.5rem;
+}
+.book-h{
+  font-family:var(--fd);font-size:clamp(36px,5vw,64px);
+  line-height:.9;letter-spacing:.01em;
+}
+.book-h em{font-family:var(--fs);font-style:italic;color:var(--accent)}
+.book-desc{
+  font-size:14px;line-height:1.75;color:var(--muted);font-weight:300;
+}
+.book-desc strong{color:var(--text);font-weight:500}
+.book-details{display:flex;flex-direction:column;gap:.75rem}
+.book-detail{
+  display:flex;align-items:center;gap:.75rem;
+  font-size:13px;color:var(--muted);font-weight:300;
+}
+.book-detail-icon{
+  width:28px;height:28px;border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:12px;flex-shrink:0;color:var(--accent);
+}
+.book-right{
+  padding:3.5rem;
+  background:var(--bg2);
+  display:flex;flex-direction:column;gap:1.25rem;
+}
+.book-form{display:flex;flex-direction:column;gap:1rem}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.form-field{display:flex;flex-direction:column;gap:.4rem}
+.form-field label{
+  font-family:var(--fm);font-size:9px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--muted);
+}
+.form-field input,.form-field select,.form-field textarea{
+  background:var(--bg);
+  border:1px solid var(--border2);
+  color:var(--text);
+  font-family:var(--fb);font-size:13px;font-weight:300;
+  padding:.85rem 1rem;
+  outline:none;
+  transition:border-color .2s;
+  width:100%;
+  -webkit-appearance:none;
+}
+.form-field input:focus,.form-field select:focus,.form-field textarea:focus{
+  border-color:var(--accent);
+}
+.form-field select{cursor:pointer}
+.form-field textarea{resize:vertical;min-height:100px}
+.form-field input::placeholder,.form-field textarea::placeholder{color:var(--muted2)}
+.form-submit{
+  display:inline-flex;align-items:center;justify-content:center;gap:.7rem;
+  background:var(--accent);color:var(--bg);
+  font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  padding:1rem;border:none;cursor:pointer;font-family:var(--fb);
+  transition:background .2s,transform .15s;width:100%;margin-top:.5rem;
+}
+.form-submit:hover{background:#bfdf2b;transform:translateY(-1px)}
+.form-note{
+  font-family:var(--fm);font-size:9px;letter-spacing:.12em;
+  color:var(--muted2);text-align:center;line-height:1.6;
+}
+.form-success{
+  display:none;
+  flex-direction:column;align-items:center;justify-content:center;
+  gap:1rem;text-align:center;padding:2rem;
+  min-height:300px;
+}
+.form-success.show{display:flex}
+.form-success-icon{
+  width:52px;height:52px;border:1px solid var(--accent);
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:20px;color:var(--accent);
+}
+.form-success-h{font-family:var(--fd);font-size:32px;letter-spacing:.03em}
+.form-success-sub{font-size:13px;color:var(--muted);font-weight:300;max-width:260px}
+
+@media(max-width:768px){
+  .book-wrap{grid-template-columns:1fr}
+  .book-left{border-right:none;border-bottom:1px solid var(--border);padding:2rem 1.5rem}
+  .book-right{padding:2rem 1.5rem}
+  .form-row{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .book-left,.book-right{padding:1.75rem 1.25rem}
+}
+
+/* SHORTS SECTION */
+.shorts-strip{display:flex;gap:1.25rem;overflow-x:auto;padding-bottom:1rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent}
+.shorts-strip::-webkit-scrollbar{height:6px}
+.shorts-strip::-webkit-scrollbar-thumb{background:var(--border2)}
+.shorts-strip::-webkit-scrollbar-track{background:transparent}
+.short-card{
+  flex:0 0 220px;
+  aspect-ratio:9/16;
+  position:relative;
+  border:1px solid var(--border);
+  background:var(--bg2);
+  overflow:hidden;
+  text-decoration:none;
+  display:flex;flex-direction:column;justify-content:flex-end;
+  transition:border-color .3s,transform .3s;
+}
+.short-card:hover{border-color:rgba(212,245,60,.3);transform:translateY(-4px)}
+.short-thumb{
+  position:absolute;inset:0;
+  background:linear-gradient(160deg, var(--bg3) 0%, var(--bg2) 100%);
+  display:flex;align-items:center;justify-content:center;
+}
+.short-thumb-icon{
+  width:52px;height:52px;border-radius:50%;
+  border:1px solid var(--border2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:18px;color:var(--accent);
+  transition:all .3s;
+  background:rgba(212,245,60,.05);
+}
+.short-card:hover .short-thumb-icon{background:var(--accent);color:var(--bg);transform:scale(1.1)}
+.short-meta{
+  position:relative;z-index:2;
+  padding:1.25rem;
+  background:linear-gradient(transparent, rgba(10,10,8,.85) 60%);
+}
+.short-tag{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--accent);margin-bottom:.4rem}
+.short-title{font-family:var(--fd);font-size:18px;line-height:1.05;letter-spacing:.02em;color:var(--text)}
+.shorts-cta{display:flex;align-items:center;justify-content:space-between;gap:1.5rem;flex-wrap:wrap;margin-top:2rem;padding-top:2rem;border-top:1px solid var(--border)}
+.shorts-cta-text{font-size:13px;color:var(--muted);font-weight:300;max-width:380px}
+.shorts-cta-text strong{color:var(--text);font-weight:500}
+
+@media(max-width:768px){
+  .short-card{flex:0 0 160px}
+}
+
 /* ══════ MOBILE ══════ */
 @media(max-width:1024px){
   nav,footer{padding-left:2rem;padding-right:2rem}
@@ -370,7 +612,8 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
   .nav-links,.nav-cta{display:none}
   .nav-ham{display:flex}
   .hero{padding:7rem 1.5rem 4rem;min-height:100svh;gap:3rem}
-  .hero-problems{grid-template-columns:1fr}
+  .prob-stage{padding:2rem 1.5rem;min-height:200px}
+  .prob-slot{min-height:160px}
   .hero-turn{flex-direction:column;align-items:flex-start;gap:2rem}
   .scroll-ind{display:none}
   .tax-banner{flex-direction:column;align-items:flex-start;gap:.75rem;padding:1.25rem 1.5rem}
@@ -426,6 +669,8 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
   <a href="#about" onclick="closeNav()">About</a>
   <a href="#estimator" onclick="closeNav()">Estimator</a>
   <a href="#process" onclick="closeNav()">Process</a>
+  <a href="#book" onclick="closeNav()">Book a Session</a>
+  <a href="#shorts" onclick="closeNav()">Watch</a>
   <a href="#estimator" class="m-cta" onclick="closeNav()">Get an Estimate ↗</a>
 </div>
 
@@ -437,6 +682,8 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
     <li><a href="#about">About</a></li>
     <li><a href="#estimator">Estimator</a></li>
     <li><a href="#process">Process</a></li>
+    <li><a href="#book">Book</a></li>
+    <li><a href="#shorts">Watch</a></li>
   </ul>
   <a href="#estimator" class="nav-cta">Get an Estimate</a>
   <button class="nav-ham" id="hamBtn" aria-label="Menu"><span></span><span></span><span></span></button>
@@ -451,36 +698,41 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
   <!-- eyebrow -->
   <div class="hero-eye">
     <div class="hero-dot"></div>
-    <span class="hero-eye-txt">For small teams · Growing brands · Digital-first businesses</span>
+    <span class="hero-eye-txt">For mid-size businesses · Growing brands · Founders who are serious</span>
   </div>
 
-  <!-- opener -->
-  <div class="hero-opener">
-    <span class="hero-opener-q"><span>Does any of this</span></span>
-    <span class="hero-opener-sub"><span>sound familiar?</span></span>
-  </div>
 
-  <!-- 4 problem cards -->
-  <div class="hero-problems">
-    <div class="prob-card">
-      <span class="prob-quote">"</span>
-      <div class="prob-text">We've tried agencies.<br>We get <em>decks, not results.</em></div>
-      <div class="prob-who">Growing business · SME</div>
+
+  <!-- Dynamic single-spot problem display -->
+  <div class="prob-stage" id="probStage">
+    <span class="prob-stage-quote">"</span>
+    <div class="prob-scan" id="probScan"></div>
+    <div class="prob-slot" id="probSlot">
+      <div class="prob-item active">
+        <div class="prob-text">We've tried agencies.<br>We get <em>decks, not results.</em></div>
+        <div class="prob-who">Growing business · SME</div>
+      </div>
+      <div class="prob-item">
+        <div class="prob-text">Everyone's talking about AI.<br>I don't know what's <em>relevant for my business.</em></div>
+        <div class="prob-who">Any stage · Any industry</div>
+      </div>
+      <div class="prob-item">
+        <div class="prob-text">We have good revenue but <em>no real marketing system</em> — it's all word of mouth.</div>
+        <div class="prob-who">Established business · D2C</div>
+      </div>
+      <div class="prob-item">
+        <div class="prob-text">I keep spending on things that <em>don't move the needle.</em></div>
+        <div class="prob-who">Founder · Small team</div>
+      </div>
     </div>
-    <div class="prob-card">
-      <span class="prob-quote">"</span>
-      <div class="prob-text">Everyone's talking about AI.<br>I don't know what's <em>relevant for my business.</em></div>
-      <div class="prob-who">Any stage · Any industry</div>
+    <div class="prob-progress" id="probProgress">
+      <div class="prob-bar active" data-i="0"><div class="prob-bar-fill"></div></div>
+      <div class="prob-bar" data-i="1"><div class="prob-bar-fill"></div></div>
+      <div class="prob-bar" data-i="2"><div class="prob-bar-fill"></div></div>
+      <div class="prob-bar" data-i="3"><div class="prob-bar-fill"></div></div>
     </div>
-    <div class="prob-card">
-      <span class="prob-quote">"</span>
-      <div class="prob-text">We have good revenue but <em>no real marketing system</em> — it's all word of mouth.</div>
-      <div class="prob-who">Established business · D2C</div>
-    </div>
-    <div class="prob-card">
-      <span class="prob-quote">"</span>
-      <div class="prob-text">I keep spending on things that <em>don't move the needle.</em></div>
-      <div class="prob-who">Founder · Small team</div>
+    <div class="prob-closer">
+      If any of these sound familiar — <a href="#book" class="prob-closer-link">watch a video</a> or <a href="#book" class="prob-closer-cta">book a session directly.</a>
     </div>
   </div>
 
@@ -490,13 +742,11 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="hero-turn-label">You're in the right place</div>
       <div class="hero-turn-h">I'm Sudhanshu.<br>I <em>eliminate</em> all four.</div>
       <p class="hero-turn-sub">
-        Strategy, AI automation, and digital products —
-        <strong>built by someone who's been the marketer, the developer, and the founder.</strong>
-        No decks. No handoffs. Just work that moves the needle.
+        Strategy, AI automation, and products that ship — <strong>from one person, not a relay of departments.</strong>
       </p>
       <div class="hero-actions">
-        <a href="#eliminate" class="btn-p">See How ↓</a>
-        <a href="#estimator" class="btn-g">Estimate my project →</a>
+        <a href="#book" class="btn-p">Book a Session ↗</a>
+        <a href="#shorts" class="btn-g">Watch a video first →</a>
       </div>
     </div>
     <div class="hero-turn-right">
@@ -507,18 +757,6 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
     </div>
   </div>
 </section>
-
-<!-- PASSION BANNER -->
-<div class="tax-banner">
-  <div class="tax-left">
-    <div class="tax-icon">⚡</div>
-    <div>
-      <div class="tax-label">Core Mission</div>
-      <div class="tax-text">Passionate about helping businesses unlock the power of <em>AI Automations</em> — to save time, cut costs, and stay competitive.</div>
-    </div>
-  </div>
-  <div class="tax-badge">Sudhanshu · 18 Years · 3 Disciplines</div>
-</div>
 
 <!-- MARQUEE -->
 <div class="mq-wrap">
@@ -545,7 +783,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="sec-tag">01 — The Real Problem</div>
       <h2 class="sec-h">What I<br><em>Eliminate</em></h2>
     </div>
-    <div class="sec-sub">Most businesses don't have a marketing problem. They have a <strong>clarity, system, and execution problem.</strong> Here's exactly what disappears when we work together.</div>
+    <div class="sec-sub">Not a marketing problem. A <strong>clarity, system, and execution</strong> problem.</div>
   </div>
   <div class="elim-grid">
     <div class="elim-card">
@@ -553,7 +791,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="elim-who">Small teams · No marketing system</div>
       <div class="elim-pain">The<br>Guesswork</div>
       <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
-      <p class="elim-result">You're winging your marketing every month. No pipeline, no system, no way to know what's working. <strong>I replace the guesswork with a repeatable marketing engine</strong> so growth stops depending on your mood or the month.</p>
+      <p class="elim-result">No pipeline. No system. Just hope. <strong>I build the marketing engine that runs without you.</strong></p>
       <div class="elim-foot">Brand · Marketing System · Automation</div>
     </div>
     <div class="elim-card">
@@ -561,7 +799,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="elim-who">Traditional businesses · Going digital</div>
       <div class="elim-pain">The Wrong<br>Turns</div>
       <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
-      <p class="elim-result">Spending on websites, ads, and tools that don't talk to each other — and don't convert. <strong>I map the right digital path before a single rupee goes to execution</strong> — so you stop paying for things that don't work.</p>
+      <p class="elim-result">Wrong tools, wrong spend, wrong turns. <strong>I map the right path before you spend another rupee.</strong></p>
       <div class="elim-foot">Digital Strategy · Right Stack · Clear Roadmap</div>
     </div>
     <div class="elim-card">
@@ -569,7 +807,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="elim-who">D2C · E-commerce brands</div>
       <div class="elim-pain">The Leaky<br>Bucket</div>
       <div class="elim-div"><div class="elim-div-line"></div><div class="elim-div-icon">↓</div><div class="elim-div-line"></div></div>
-      <p class="elim-result">Spending on ads but the brand doesn't convert. Traffic arrives, most leaves. <strong>I fix the conversion layer</strong> — building the brand clarity and communication system that makes every ₹ of ad spend work harder.</p>
+      <p class="elim-result">Traffic comes in. Customers don't. <strong>I fix the brand and conversion layer that plugs the leak.</strong></p>
       <div class="elim-foot">Brand Clarity · Conversion · Story</div>
     </div>
     <div class="elim-card">
@@ -611,10 +849,10 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 <section class="sec" id="about">
   <div class="sec-hdr">
     <div>
-      <div class="sec-tag">03 — Why Sudhanshu</div>
-      <h2 class="sec-h">The Only One<br>Who's <em>Lived</em><br>All Four Sides</h2>
+      <div class="sec-tag">03 — The Approach</div>
+      <h2 class="sec-h">One Thread.<br>Start to <em>Finish</em>.</h2>
     </div>
-    <div class="sec-sub">Most people fix one thing. Sudhanshu has been the marketer, the developer, the AI builder, and the founder — simultaneously. That's why he sees problems others can't even diagnose.</div>
+    <div class="sec-sub">Strategy, build, and automation — usually three handoffs. Here, one continuous thread.</div>
   </div>
   <div class="about-wrap">
     <div class="about-left">
@@ -625,32 +863,32 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
           <div class="about-title">Marketer · Developer · Founder · AI Builder</div>
         </div>
       </div>
-      <div class="about-hook">"Most consultants fix <em>one</em> problem.<br>I fix the <em>system</em> that creates them all."</div>
-      <p class="about-bio">A brand agency doesn't touch your tech stack. A developer doesn't think about positioning. An AI vendor doesn't care about your GTM. You pay all three — and they still don't talk to each other.<br><br>I've spent <strong>18 years being all four simultaneously</strong> — building startups from scratch, running marketing at scale, shipping digital products, and building AI systems that eliminate the manual work entirely.<br><br>Which means I find where your system is broken, fix the root cause, and build something that runs without me.</p>
+      <div class="about-hook">18 years.<br>Marketing. Product. <em>AI.</em><br>Same person, same thread.</div>
+      <p class="about-bio">Most projects pass through a brand consultant, a developer, and an AI specialist — each handing off to the next. I've spent <strong>18 years doing all three</strong>, so the thread stays unbroken from idea to working system.</p>
       <div class="about-proof">
         <div><div class="ap-n">18+</div><div class="ap-l">Years</div></div>
-        <div><div class="ap-n">4</div><div class="ap-l">Disciplines</div></div>
-        <div><div class="ap-n">1</div><div class="ap-l">Engagement</div></div>
+        <div><div class="ap-n">3</div><div class="ap-l">Crafts</div></div>
+        <div><div class="ap-n">1</div><div class="ap-l">Thread</div></div>
       </div>
     </div>
     <div class="about-right">
-      <div class="about-right-head">Three Problems. One Person.</div>
+      <div class="about-right-head">The Three Layers</div>
       <div class="elim-pillar">
         <div class="ep-num">01 — Strategy</div>
         <div class="ep-title">Brand & Marketing</div>
-        <div class="ep-desc">Eliminates guesswork and wasted spend. Builds the positioning, messaging, and systems that make marketing repeatable.</div>
+        <div class="ep-desc">Positioning, messaging, and a system that makes marketing repeatable.</div>
         <div class="ep-tags"><span class="ep-tag">Brand Identity</span><span class="ep-tag">GTM</span><span class="ep-tag">Content Systems</span></div>
       </div>
       <div class="elim-pillar">
         <div class="ep-num">02 — Build</div>
         <div class="ep-title">Digital Products</div>
-        <div class="ep-desc">Eliminates wrong turns and bad tech decisions. Ships web apps and platforms designed to convert from day one.</div>
+        <div class="ep-desc">Web apps and platforms, designed to convert from day one.</div>
         <div class="ep-tags"><span class="ep-tag">Web Apps</span><span class="ep-tag">MVPs</span><span class="ep-tag">Conversion Design</span></div>
       </div>
       <div class="elim-pillar">
         <div class="ep-num">03 — Intelligence</div>
         <div class="ep-title">AI Automations</div>
-        <div class="ep-desc">Eliminates manual work and slow decisions. Builds AI workflows that save time, cut costs, and keep you competitive.</div>
+        <div class="ep-desc">Workflows that quietly remove the manual work.</div>
         <div class="ep-tags"><span class="ep-tag">LLM Integration</span><span class="ep-tag">Automation</span><span class="ep-tag">AI Ops</span></div>
       </div>
     </div>
@@ -664,7 +902,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="sec-tag">02 — How I Fix It</div>
       <h2 class="sec-h">Three Ways<br>I <em>Fix It</em></h2>
     </div>
-    <div class="sec-sub">Not a menu of deliverables. Three integrated levers — each one targeting a specific kind of business pain.</div>
+    <div class="sec-sub">Three levers. Each one fixes a specific pain.</div>
   </div>
   <div class="svc-grid">
     <div class="svc-card">
@@ -672,7 +910,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="svc-ico">Removes → Confusion & Guesswork</div>
       <div class="svc-name">Brand &<br>Strategy</div>
       <div class="svc-outcome">You stop → Winging it every month</div>
-      <p class="svc-desc">Brand architecture, positioning, and marketing systems that give your business a repeatable engine — not just a one-time campaign.</p>
+      <p class="svc-desc">A repeatable engine — not a one-time campaign.</p>
       <div class="svc-pills"><span class="svc-pill">Brand Identity</span><span class="svc-pill">GTM Strategy</span><span class="svc-pill">Marketing Systems</span><span class="svc-pill">Messaging</span></div>
       <a href="#estimator" class="svc-lnk">Estimate Cost →</a>
     </div>
@@ -681,7 +919,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="svc-ico">Removes → Wrong tools & wrong turns</div>
       <div class="svc-name">Digital<br>Products</div>
       <div class="svc-outcome">You stop → Paying for things that don't work</div>
-      <p class="svc-desc">Web apps, SaaS tools, and conversion-led platforms — designed around your customer journey, built to perform from day one.</p>
+      <p class="svc-desc">Built around your customer journey. Performs from day one.</p>
       <div class="svc-pills"><span class="svc-pill">Web Apps</span><span class="svc-pill">MVPs</span><span class="svc-pill">Landing Pages</span><span class="svc-pill">Dashboards</span></div>
       <a href="#estimator" class="svc-lnk">Estimate Cost →</a>
     </div>
@@ -690,7 +928,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="svc-ico">Removes → Manual work & slow decisions</div>
       <div class="svc-name">AI<br>Automations</div>
       <div class="svc-outcome">You stop → Doing by hand what a system can do</div>
-      <p class="svc-desc">Custom AI workflows that save hours, cut costs, and keep you competitive — built for real business processes, not demos.</p>
+      <p class="svc-desc">Built for real workflows — not demos.</p>
       <div class="svc-pills"><span class="svc-pill">Workflow Automation</span><span class="svc-pill">LLM Integration</span><span class="svc-pill">AI Content Ops</span><span class="svc-pill">Data Pipelines</span></div>
       <a href="#estimator" class="svc-lnk">Estimate Cost →</a>
     </div>
@@ -704,13 +942,13 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="sec-tag">04 — Free Tool</div>
       <h2 class="sec-h">What Will It<br>Cost to <em>Fix It?</em></h2>
     </div>
-    <div class="sec-sub">6 questions. AI-generated scope + realistic cost range. No sales call required.</div>
+    <div class="sec-sub">6 questions. Real numbers. No sales call.</div>
   </div>
   <div class="estimator-wrap">
     <div class="est-header">
       <div class="est-badge">✦ AI-Powered — Instant Result</div>
       <div class="est-title">Project Cost Estimator</div>
-      <p class="est-sub">Tell me what you're trying to fix. Get a tailored scope and realistic budget range in under 2 minutes.</p>
+      <p class="est-sub">2 minutes. Real numbers, not a "let's hop on a call."</p>
     </div>
     <div class="est-body">
       <div class="step-ind" id="stepInd"></div>
@@ -778,13 +1016,147 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
       <div class="sec-tag">05 — How I Work</div>
       <h2 class="sec-h">No Fluff.<br><em>Just Progress.</em></h2>
     </div>
-    <div class="sec-sub">Founder-paced. Transparent. Accountable to outcomes, not hours logged.</div>
+    <div class="sec-sub">Founder-paced. No black box.</div>
   </div>
   <div class="proc-list">
-    <div class="proc-row"><div class="proc-n">01</div><div class="proc-name">DIAGNOSE</div><div class="proc-desc">Before I recommend anything, I find the actual root cause. Most businesses are solving the wrong problem — we fix that first.</div></div>
-    <div class="proc-row"><div class="proc-n">02</div><div class="proc-name">STRATEGISE</div><div class="proc-desc">Brand, architecture, automation roadmap — all locked before execution begins. You see exactly what you're getting.</div></div>
-    <div class="proc-row"><div class="proc-n">03</div><div class="proc-name">BUILD</div><div class="proc-desc">Weekly demos. Fast iterations. You're in the loop every step. Decisions in days, not weeks.</div></div>
-    <div class="proc-row"><div class="proc-n">04</div><div class="proc-name">ELIMINATE & GROW</div><div class="proc-desc">I stay involved until the problem is actually gone — and the system runs without me.</div></div>
+    <div class="proc-row"><div class="proc-n">01</div><div class="proc-name">DIAGNOSE</div><div class="proc-desc">Find the actual root cause before recommending anything.</div></div>
+    <div class="proc-row"><div class="proc-n">02</div><div class="proc-name">STRATEGISE</div><div class="proc-desc">The plan — locked before execution begins.</div></div>
+    <div class="proc-row"><div class="proc-n">03</div><div class="proc-name">BUILD</div><div class="proc-desc">Weekly demos. Fast iterations. Decisions in days, not weeks.</div></div>
+    <div class="proc-row"><div class="proc-n">04</div><div class="proc-name">ELIMINATE & GROW</div><div class="proc-desc">I stay until the system runs without me.</div></div>
+  </div>
+</section>
+
+
+
+<!-- BOOK A SESSION -->
+<section class="sec" id="book">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-tag">06 — Work Together</div>
+      <h2 class="sec-h">Book a<br><em>Session</em></h2>
+    </div>
+    <div class="sec-sub">30 minutes. No pitch. Just a direct conversation about what's not working and whether I can fix it.</div>
+  </div>
+  <div class="book-wrap">
+    <div class="book-left">
+      <div>
+        <div class="book-label">What to expect</div>
+        <div class="book-h">A straight<br><em>conversation.</em></div>
+      </div>
+      <p class="book-desc">
+        Not a discovery call with a deck at the end.
+        <strong>30 minutes to diagnose the actual problem</strong> — and tell you honestly whether I can solve it, and what that looks like.
+      </p>
+      <div class="book-details">
+        <div class="book-detail">
+          <div class="book-detail-icon">◎</div>
+          30-minute video or call
+        </div>
+        <div class="book-detail">
+          <div class="book-detail-icon">◎</div>
+          No pitch deck, no proposal first
+        </div>
+        <div class="book-detail">
+          <div class="book-detail-icon">◎</div>
+          You leave with at least one clear next step
+        </div>
+        <div class="book-detail">
+          <div class="book-detail-icon">◎</div>
+          Accepting mid-size businesses only
+        </div>
+      </div>
+    </div>
+    <div class="book-right">
+      <div class="book-form" id="bookForm">
+        <div class="form-row">
+          <div class="form-field">
+            <label>Your Name</label>
+            <input type="text" id="fname" placeholder="Rahul Mehta">
+          </div>
+          <div class="form-field">
+            <label>Business Name</label>
+            <input type="text" id="fbiz" placeholder="Acme Co.">
+          </div>
+        </div>
+        <div class="form-field">
+          <label>Email</label>
+          <input type="email" id="femail" placeholder="rahul@acmeco.in">
+        </div>
+        <div class="form-field">
+          <label>Revenue Range</label>
+          <select id="frev">
+            <option value="" disabled selected>Select range</option>
+            <option>₹1 Cr – ₹5 Cr</option>
+            <option>₹5 Cr – ₹25 Cr</option>
+            <option>₹25 Cr – ₹100 Cr</option>
+            <option>₹100 Cr+</option>
+          </select>
+        </div>
+        <div class="form-field">
+          <label>What's the main problem you want to solve?</label>
+          <textarea id="fprob" placeholder="Be specific — the more real this is, the more useful the session will be."></textarea>
+        </div>
+        <button class="form-submit" id="formSubmit">Request a Session ↗</button>
+        <div class="form-note">Sudhanshu reviews every request personally. You'll hear back within 24 hours.</div>
+      </div>
+      <div class="form-success" id="formSuccess">
+        <div class="form-success-icon">✓</div>
+        <div class="form-success-h">Request Sent</div>
+        <div class="form-success-sub">Sudhanshu will review this and get back to you within 24 hours.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SHORTS -->
+<section class="sec" id="shorts">
+  <div class="sec-hdr">
+    <div>
+      <div class="sec-tag">07 — Watch</div>
+      <h2 class="sec-h">Quick Hits<br>on <em>YouTube</em></h2>
+    </div>
+    <div class="sec-sub">Short, sharp ideas on marketing, AI, and building businesses — no fluff, under 60 seconds.</div>
+  </div>
+  <div class="shorts-strip">
+    <a href="https://youtube.com/@yourchannel" target="_blank" class="short-card">
+      <div class="short-thumb"><div class="short-thumb-icon">▶</div></div>
+      <div class="short-meta">
+        <div class="short-tag">AI Automation</div>
+        <div class="short-title">Why your AI tool isn't saving you time</div>
+      </div>
+    </a>
+    <a href="https://youtube.com/@yourchannel" target="_blank" class="short-card">
+      <div class="short-thumb"><div class="short-thumb-icon">▶</div></div>
+      <div class="short-meta">
+        <div class="short-tag">Branding</div>
+        <div class="short-title">The ₹0 brand audit every founder should do</div>
+      </div>
+    </a>
+    <a href="https://youtube.com/@yourchannel" target="_blank" class="short-card">
+      <div class="short-thumb"><div class="short-thumb-icon">▶</div></div>
+      <div class="short-meta">
+        <div class="short-tag">Marketing</div>
+        <div class="short-title">Stop posting. Start systems.</div>
+      </div>
+    </a>
+    <a href="https://youtube.com/@yourchannel" target="_blank" class="short-card">
+      <div class="short-thumb"><div class="short-thumb-icon">▶</div></div>
+      <div class="short-meta">
+        <div class="short-tag">GTM</div>
+        <div class="short-title">Built it. Now what? (GTM 101)</div>
+      </div>
+    </a>
+    <a href="https://youtube.com/@yourchannel" target="_blank" class="short-card">
+      <div class="short-thumb"><div class="short-thumb-icon">▶</div></div>
+      <div class="short-meta">
+        <div class="short-tag">AI Automation</div>
+        <div class="short-title">3 tasks I automated this week</div>
+      </div>
+    </a>
+  </div>
+  <div class="shorts-cta">
+    <div class="shorts-cta-text"><strong>New shorts every week.</strong> Practical, no-BS takes on growing a business with less guesswork.</div>
+    <a href="https://youtube.com/@yourchannel" target="_blank" class="btn-g">Subscribe on YouTube →</a>
   </div>
 </section>
 
@@ -792,11 +1164,11 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
 <section class="cta-sec">
   <div class="cta-glow"></div>
   <p class="cta-tag">3 project slots open this quarter</p>
-  <h2 class="cta-h">Ready to Stop<br><span class="ci">Getting Decks?</span></h2>
-  <p class="cta-sub">I work with a small number of businesses at a time — focused, fast, and accountable to real results. If you're stuck, let's get you out.</p>
+  <h2 class="cta-h">Ready to<br><span class="ci">Get Started?</span></h2>
+  <p class="cta-sub">A small number of projects at a time. Focused. Fast. Accountable.</p>
   <div class="cta-btns">
-    <a href="#estimator" class="btn-p">Estimate My Project ↗</a>
-    <a href="mailto:hello@doers.digital" class="btn-g">Email Sudhanshu directly</a>
+    <a href="#book" class="btn-p">Book a Session ↗</a>
+    <a href="#shorts" class="btn-g">Watch a video first →</a>
   </div>
 </section>
 
@@ -808,7 +1180,7 @@ footer{padding:2.5rem 3rem;border-top:1px solid var(--border);display:flex;align
     <li><a href="#">Twitter / X</a></li>
     <li><a href="#">Blog</a></li>
   </ul>
-  <span class="fc">© 2025 Sudhanshu / Doers Digital</span>
+  <span class="fc">Passionate about helping businesses unlock AI Automations — to save time, cut costs, stay competitive.<br>© 2025 Sudhanshu / Doers Digital</span>
 </footer>
 
 <script>
@@ -821,6 +1193,107 @@ document.querySelectorAll('a,button,.elim-card,.elim-pillar,.prob-card').forEach
   el.addEventListener('mouseenter',()=>{ring.style.width='52px';ring.style.height='52px'});
   el.addEventListener('mouseleave',()=>{ring.style.width='32px';ring.style.height='32px'});
 });
+
+
+// BOOKING FORM
+document.getElementById('formSubmit').addEventListener('click',function(){
+  const name=document.getElementById('fname').value.trim();
+  const biz=document.getElementById('fbiz').value.trim();
+  const email=document.getElementById('femail').value.trim();
+  const rev=document.getElementById('frev').value;
+  const prob=document.getElementById('fprob').value.trim();
+  if(!name||!email||!rev||!prob){
+    // simple shake on empty fields
+    const btn=document.getElementById('formSubmit');
+    btn.style.background='#ff4d4d';
+    btn.textContent='Please fill all fields';
+    setTimeout(()=>{btn.style.background='';btn.textContent='Request a Session ↗';},2000);
+    return;
+  }
+  // In production: replace with your form endpoint / emailjs / formspree
+  // For now: simulate success
+  document.getElementById('bookForm').style.display='none';
+  document.getElementById('formSuccess').classList.add('show');
+});
+
+// PROBLEM STAGE CYCLER
+(function(){
+  const items=document.querySelectorAll('#probSlot .prob-item');
+  const bars=document.querySelectorAll('#probProgress .prob-bar');
+  let idx=0, timer=null, DURATION=3500;
+
+  const scan=document.getElementById('probScan');
+
+  function goTo(i){
+    const prevIdx=idx;
+    items[prevIdx].classList.remove('active');
+    items[prevIdx].classList.add('exiting');
+    setTimeout(()=>{
+      items[prevIdx].classList.remove('exiting');
+      items[prevIdx].style.filter='';
+    },560);
+
+    // trigger scanline sweep
+    scan.classList.remove('run');
+    void scan.offsetWidth;
+    scan.classList.add('run');
+
+    bars[idx].classList.remove('active');
+    bars[idx].classList.add('done');
+    idx=i%items.length;
+
+    setTimeout(()=>{
+      items[idx].classList.remove('exiting');
+      items[idx].style.animation='none';
+      void items[idx].offsetWidth;
+      items[idx].style.animation='';
+      items[idx].classList.add('active');
+    },180);
+
+    bars.forEach((b,bi)=>{
+      if(bi<idx){b.classList.add('done');b.classList.remove('active')}
+      else if(bi===idx){b.classList.remove('done');b.classList.add('active')}
+      else{b.classList.remove('done');b.classList.remove('active')}
+    });
+    // restart fill animation
+    bars[idx].querySelector('.prob-bar-fill').style.transition='none';
+    bars[idx].querySelector('.prob-bar-fill').style.width='0%';
+    void bars[idx].offsetWidth; // reflow
+    bars[idx].querySelector('.prob-bar-fill').style.transition=`width ${DURATION}ms linear`;
+    bars[idx].querySelector('.prob-bar-fill').style.width='100%';
+  }
+  function next(){ goTo((idx+1)%items.length); }
+  function start(){
+    // init first bar fill
+    bars[0].querySelector('.prob-bar-fill').style.transition=`width ${DURATION}ms linear`;
+    bars[0].querySelector('.prob-bar-fill').style.width='100%';
+    timer=setInterval(next,DURATION);
+  }
+  function stop(){clearInterval(timer)}
+
+  bars.forEach((b,i)=>{
+    b.addEventListener('click',()=>{
+      stop();
+      goTo(i);
+      start();
+    });
+  });
+
+  const stage=document.getElementById('probStage');
+  stage.addEventListener('mouseenter',()=>{
+    clearInterval(timer);
+    bars[idx].querySelector('.prob-bar-fill').style.transition='none';
+  });
+  stage.addEventListener('mouseleave',()=>{
+    bars[idx].querySelector('.prob-bar-fill').style.width='0%';
+    void bars[idx].offsetWidth;
+    bars[idx].querySelector('.prob-bar-fill').style.transition=`width ${DURATION}ms linear`;
+    bars[idx].querySelector('.prob-bar-fill').style.width='100%';
+    timer=setInterval(next,DURATION);
+  });
+
+  start();
+})();
 
 // HAMBURGER
 const ham=document.getElementById('hamBtn'),mNav=document.getElementById('mobileNav');
