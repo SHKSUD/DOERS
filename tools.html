@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Free Business Tools — Doers Digital</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bebas+Neue&family=DM+Mono:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a08;--bg2:#111110;--bg3:#161614;
+  --text:#f0ede6;--muted:#6b6960;--muted2:#4a4944;
+  --accent:#d4f53c;--orange:#ff7a3d;--cyan:#4dd8e6;--purple:#b97aff;
+  --border:rgba(240,237,230,0.07);--border2:rgba(240,237,230,0.14);
+  --fd:'Bebas Neue',sans-serif;--fb:'Space Grotesk',sans-serif;--fm:'DM Mono',monospace;
+  --wa:#25D366;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--fb);overflow-x:hidden}
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.35}
+
+/* HEADER */
+.hdr{padding:1.25rem 3rem;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;background:rgba(10,10,8,.92);backdrop-filter:blur(16px);position:sticky;top:0;z-index:100}
+.hdr-logo{display:flex;flex-direction:column;line-height:1;gap:1px;text-decoration:none}
+.hdr-logo .l1{font-family:var(--fd);font-size:18px;letter-spacing:.1em;color:var(--text)}
+.hdr-logo .l2{font-family:var(--fm);font-size:8px;letter-spacing:.35em;color:var(--accent);text-transform:uppercase}
+.hdr-wa{display:inline-flex;align-items:center;gap:.5rem;background:var(--wa);color:#fff;font-size:10px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.5rem 1rem;text-decoration:none;font-family:var(--fb);transition:opacity .2s}
+.hdr-wa:hover{opacity:.9}
+
+/* HERO */
+.hero{padding:6rem 3rem 4rem;border-bottom:1px solid var(--border);position:relative;overflow:hidden;text-align:center}
+.hero-glow{position:absolute;top:-20%;left:50%;transform:translateX(-50%);width:70vw;height:50vw;background:radial-gradient(circle,rgba(212,245,60,.05) 0%,transparent 65%);pointer-events:none}
+.hero-tag{font-family:var(--fm);font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;display:flex;align-items:center;justify-content:center;gap:.5rem}
+.hero-tag::before,.hero-tag::after{content:'';flex:1;max-width:40px;height:1px;background:var(--accent)}
+.hero-h{font-family:var(--fd);font-size:clamp(52px,10vw,120px);line-height:.88;letter-spacing:-.01em;margin-bottom:1rem}
+.hero-h em{color:var(--accent);font-style:normal}
+.hero-sub{font-size:15px;line-height:1.75;color:var(--muted);font-weight:300;max-width:520px;margin:0 auto 2.5rem}
+.hero-sub strong{color:var(--text);font-weight:500}
+.hero-tools-count{font-family:var(--fm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+
+/* TOOLS NAV */
+.tools-nav{display:flex;gap:0;border-bottom:1px solid var(--border);overflow-x:auto;scrollbar-width:none;background:var(--bg2)}
+.tools-nav::-webkit-scrollbar{display:none}
+.tool-tab{padding:1.25rem 2rem;font-family:var(--fm);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;transition:all .2s;white-space:nowrap;background:none;border-top:none;border-left:none;border-right:none;font-family:var(--fb);font-weight:500}
+.tool-tab:hover{color:var(--text)}
+.tool-tab.active{color:var(--text);border-bottom-color:var(--accent)}
+
+/* TOOL PANELS */
+.tool-panel{display:none;padding:4rem 3rem;max-width:760px;margin:0 auto;animation:panelIn .4s ease}
+.tool-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+/* TOOL HEADER */
+.tool-hdr{margin-bottom:3rem}
+.tool-num{font-family:var(--fm);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.5rem}
+.tool-name{font-family:var(--fd);font-size:clamp(36px,6vw,72px);line-height:.9;letter-spacing:.01em;margin-bottom:.75rem}
+.tool-desc{font-size:14px;line-height:1.75;color:var(--muted);font-weight:300;max-width:520px}
+.tool-desc strong{color:var(--text);font-weight:500}
+
+/* FORM ELEMENTS */
+.form-section{margin-bottom:2rem}
+.form-section-label{font-family:var(--fm);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--muted);margin-bottom:1rem;display:flex;align-items:center;gap:.5rem}
+.form-section-label::after{content:'';flex:1;height:1px;background:var(--border)}
+.field{margin-bottom:1rem}
+.field label{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:.4rem}
+.field input,.field select{width:100%;background:var(--bg2);border:1px solid var(--border2);color:var(--text);font-family:var(--fb);font-size:14px;font-weight:300;padding:.85rem 1rem;outline:none;transition:border-color .2s;-webkit-appearance:none}
+.field input:focus,.field select:focus{border-color:var(--accent)}
+.field input::placeholder{color:var(--muted2)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field-hint{font-size:11px;color:var(--muted2);margin-top:.3rem;font-weight:300}
+
+/* RADIO OPTIONS */
+.radio-opts{display:flex;flex-direction:column;gap:.5rem}
+.radio-opt{display:flex;align-items:center;gap:.9rem;padding:.85rem 1.1rem;border:1px solid var(--border);cursor:pointer;transition:all .2s;user-select:none}
+.radio-opt:hover{border-color:var(--border2);background:rgba(240,237,230,.03)}
+.radio-opt.sel{border-color:var(--accent);background:rgba(212,245,60,.06)}
+.radio-dot{width:14px;height:14px;border-radius:50%;border:1px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s}
+.radio-opt.sel .radio-dot{border-color:var(--accent);background:var(--accent)}
+.radio-opt.sel .radio-dot::after{content:'';width:5px;height:5px;border-radius:50%;background:var(--bg)}
+.radio-opt-txt{font-size:13px;color:var(--muted);font-weight:300;transition:color .2s}
+.radio-opt.sel .radio-opt-txt{color:var(--text)}
+
+/* CALC BUTTON */
+.calc-btn{display:flex;align-items:center;justify-content:center;gap:.6rem;background:var(--accent);color:var(--bg);font-size:11px;font-weight:700;letter-spacing:.15em;text-transform:uppercase;padding:1rem;border:none;cursor:pointer;font-family:var(--fb);transition:background .2s,transform .15s;width:100%;margin-top:.5rem}
+.calc-btn:hover{background:#bfdf2b;transform:translateY(-1px)}
+.reset-btn{display:flex;align-items:center;justify-content:center;gap:.5rem;background:none;border:1px solid var(--border2);color:var(--muted);font-size:10px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;padding:.7rem;cursor:pointer;font-family:var(--fb);transition:all .2s;width:100%;margin-top:.75rem}
+.reset-btn:hover{border-color:var(--text);color:var(--text)}
+
+/* RESULTS */
+.result-block{display:none;animation:panelIn .4s ease;margin-top:2rem}
+.result-block.show{display:block}
+
+/* BIG NUMBER */
+.big-result{padding:2.5rem;border:1px solid var(--border);background:var(--bg2);text-align:center;margin-bottom:1px;position:relative;overflow:hidden}
+.big-result-glow{position:absolute;inset:0;pointer-events:none}
+.big-result-label{font-family:var(--fm);font-size:9px;letter-spacing:.28em;text-transform:uppercase;color:var(--muted);margin-bottom:.75rem}
+.big-result-num{font-family:var(--fd);font-size:clamp(52px,10vw,96px);line-height:.9;letter-spacing:-.02em;margin-bottom:.5rem}
+.big-result-sub{font-size:14px;color:var(--muted);font-weight:300;line-height:1.6;max-width:380px;margin:0 auto}
+.big-result-sub strong{color:var(--text);font-weight:500}
+
+/* BREAKDOWN */
+.breakdown{display:flex;flex-direction:column;gap:1px;background:var(--border);margin-bottom:1px}
+.bk-row{display:flex;align-items:center;justify-content:space-between;padding:1rem 1.5rem;background:var(--bg2);gap:1rem}
+.bk-label{font-size:13px;color:var(--muted);font-weight:300}
+.bk-val{font-family:var(--fd);font-size:22px;letter-spacing:.01em}
+.bk-status{font-family:var(--fm);font-size:9px;letter-spacing:.15em;text-transform:uppercase;padding:.2rem .6rem;border:1px solid}
+
+/* INSIGHT BOX */
+.insight{padding:1.5rem;border-left:2px solid;margin-bottom:1px}
+.insight-tag{font-family:var(--fm);font-size:9px;letter-spacing:.22em;text-transform:uppercase;margin-bottom:.5rem}
+.insight-txt{font-size:13px;line-height:1.7;color:var(--muted);font-weight:300}
+.insight-txt strong{color:var(--text);font-weight:500}
+
+/* WHATSAPP CTA */
+.wa-cta{padding:2rem;background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.2);text-align:center;margin-bottom:0}
+.wa-cta-tag{font-family:var(--fm);font-size:9px;letter-spacing:.25em;text-transform:uppercase;color:var(--wa);margin-bottom:.75rem}
+.wa-cta-h{font-family:var(--fd);font-size:32px;letter-spacing:.02em;margin-bottom:.5rem}
+.wa-cta-sub{font-size:13px;color:var(--muted);font-weight:300;line-height:1.6;margin-bottom:1.5rem;max-width:360px;margin-left:auto;margin-right:auto}
+.wa-btn{display:inline-flex;align-items:center;gap:.75rem;background:var(--wa);color:#fff;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.9rem 2rem;text-decoration:none;font-family:var(--fb);transition:opacity .2s,transform .15s;border:none;cursor:pointer}
+.wa-btn:hover{opacity:.92;transform:translate(-1px,-1px)}
+.wa-icon{font-size:18px}
+
+/* TOOL FOOTER NAV */
+.tool-footer-nav{display:flex;align-items:center;justify-content:space-between;padding:2rem 3rem;border-top:1px solid var(--border);max-width:760px;margin:0 auto;flex-wrap:wrap;gap:1rem}
+.tfn-label{font-family:var(--fm);font-size:9px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.tfn-next{display:inline-flex;align-items:center;gap:.5rem;color:var(--accent);font-family:var(--fm);font-size:10px;letter-spacing:.2em;text-transform:uppercase;cursor:pointer;background:none;border:none;transition:gap .2s}
+.tfn-next:hover{gap:.75rem}
+
+/* PAGE FOOTER */
+footer{padding:2rem 3rem;border-top:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1rem}
+.fl{font-family:var(--fd);font-size:14px;letter-spacing:.1em}
+.fc{font-family:var(--fm);font-size:9px;color:var(--muted);letter-spacing:.1em}
+
+.est-note{font-family:var(--fm);font-size:9px;letter-spacing:.12em;color:var(--muted2);margin-top:1.25rem;line-height:1.6}
+
+/* MOBILE */
+@media(max-width:768px){
+  .hdr{padding:1rem 1.5rem}
+  .hero{padding:4rem 1.5rem 3rem}
+  .tool-panel{padding:3rem 1.5rem}
+  .tool-footer-nav{padding:1.5rem}
+  footer{padding:1.5rem;flex-direction:column;align-items:flex-start}
+  .field-row{grid-template-columns:1fr}
+}
+@media(max-width:480px){
+  .hero,.tool-panel{padding-left:1.25rem;padding-right:1.25rem}
+  .tool-tab{padding:1rem 1.25rem;font-size:9px}
+  .big-result{padding:2rem 1.25rem}
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="hdr">
+  <a href="https://doers.digital" class="hdr-logo"><span class="l1">Doers</span><span class="l2">DiGiTaL</span></a>
+  <a href="#" class="hdr-wa" id="hdrWa" target="_blank" style="display:none">
+    <span>💬</span> Chat on WhatsApp
+  </a>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-tag">Free Business Tools</div>
+  <h1 class="hero-h">Find What's<br><em>Hurting</em><br>Your Business</h1>
+  <p class="hero-sub">Four free tools built for business owners. <strong>No sign-up. No fluff. Just the number that matters</strong> — and what to do about it.</p>
+  <div class="hero-tools-count">4 Tools · Free · Instant Result · WhatsApp Support</div>
+</div>
+
+<!-- TOOLS NAV -->
+<div class="tools-nav">
+  <button class="tool-tab active" onclick="switchTool(0)">💸 Marketing Waste</button>
+  <button class="tool-tab" onclick="switchTool(1)">🤖 AI Relevance</button>
+  <button class="tool-tab" onclick="switchTool(2)">📊 Decision Risk</button>
+  <button class="tool-tab" onclick="switchTool(3)">🔍 Pipeline Leak</button>
+</div>
+
+<!-- ═══════════════════════════════════
+     TOOL 1: MARKETING WASTE CALCULATOR
+═══════════════════════════════════ -->
+<div class="tool-panel active" id="tool-0">
+  <div class="tool-hdr">
+    <div class="tool-num">Tool 01 of 04</div>
+    <div class="tool-name" style="color:var(--orange)">Marketing<br>Waste Calculator</div>
+    <p class="tool-desc">Find out <strong>exactly how much of your marketing budget is being wasted</strong> — and which channel is the biggest culprit. Takes 2 minutes.</p>
+  </div>
+
+  <div id="t1-form">
+    <div class="form-section">
+      <div class="form-section-label">Your Monthly Marketing Spend</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Meta / Instagram Ads (₹)</label>
+          <input type="number" id="t1-meta" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label>Google Ads (₹)</label>
+          <input type="number" id="t1-google" placeholder="0" min="0">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Agency / Freelancer Retainer (₹)</label>
+          <input type="number" id="t1-agency" placeholder="0" min="0">
+        </div>
+        <div class="field">
+          <label>Content / SEO / Other (₹)</label>
+          <input type="number" id="t1-other" placeholder="0" min="0">
+        </div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-label">Your Results</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Leads Generated per Month</label>
+          <input type="number" id="t1-leads" placeholder="e.g. 50" min="0">
+        </div>
+        <div class="field">
+          <label>Leads That Become Customers (%)</label>
+          <input type="number" id="t1-conv" placeholder="e.g. 10" min="0" max="100">
+          <div class="field-hint">If 5 out of 50 leads buy, enter 10</div>
+        </div>
+      </div>
+      <div class="field">
+        <label>Average Revenue per Customer (₹)</label>
+        <input type="number" id="t1-rev" placeholder="e.g. 50000" min="0">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-label">Your Situation</div>
+      <div class="radio-opts">
+        <div class="radio-opt sel" data-group="t1-track" data-val="none" onclick="selectRadio(this)">
+          <div class="radio-dot"></div>
+          <div class="radio-opt-txt">We don't track which channel brings leads</div>
+        </div>
+        <div class="radio-opt" data-group="t1-track" data-val="partial" onclick="selectRadio(this)">
+          <div class="radio-dot"></div>
+          <div class="radio-opt-txt">We track roughly but it's not accurate</div>
+        </div>
+        <div class="radio-opt" data-group="t1-track" data-val="full" onclick="selectRadio(this)">
+          <div class="radio-dot"></div>
+          <div class="radio-opt-txt">We track every channel with clear attribution</div>
+        </div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcWaste()">Calculate My Marketing Waste →</button>
+  </div>
+
+  <div class="result-block" id="t1-result">
+    <div class="big-result">
+      <div class="big-result-glow" id="t1-glow"></div>
+      <div class="big-result-label">Estimated Monthly Waste</div>
+      <div class="big-result-num" id="t1-waste-num" style="color:var(--orange)">₹0</div>
+      <div class="big-result-sub" id="t1-waste-sub"></div>
+    </div>
+    <div class="breakdown" id="t1-breakdown"></div>
+    <div class="insight" id="t1-insight" style="border-color:var(--orange)">
+      <div class="insight-tag" style="color:var(--orange)">The Real Problem</div>
+      <div class="insight-txt" id="t1-insight-txt"></div>
+    </div>
+    <div class="wa-cta">
+      <div class="wa-cta-tag">Get a Fix — Not Just a Number</div>
+      <div class="wa-cta-h">Talk to Sudhanshu</div>
+      <div class="wa-cta-sub">Share your result and get a direct, honest take on where to cut and where to double down.</div>
+      <a class="wa-btn" id="t1-wa-btn" href="#" target="_blank"><span class="wa-icon">💬</span> WhatsApp My Result</a>
+    </div>
+    <button class="reset-btn" onclick="resetTool('t1')">← Recalculate</button>
+  </div>
+
+  <div class="tool-footer-nav">
+    <span class="tfn-label">Next Tool</span>
+    <button class="tfn-next" onclick="switchTool(1)">🤖 AI Relevance Finder →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     TOOL 2: AI RELEVANCE FINDER
+═══════════════════════════════════ -->
+<div class="tool-panel" id="tool-1">
+  <div class="tool-hdr">
+    <div class="tool-num">Tool 02 of 04</div>
+    <div class="tool-name" style="color:var(--cyan)">AI Relevance<br>Finder</div>
+    <p class="tool-desc"><strong>Everyone's talking about AI. Not all of it applies to your business.</strong> Answer 5 questions — find out exactly which AI applications are relevant for you right now, and what they'd save you.</p>
+  </div>
+
+  <div id="t2-form">
+    <div class="form-section">
+      <div class="form-section-label">Your Business</div>
+      <div class="field">
+        <label>Industry / Type of Business</label>
+        <select id="t2-industry">
+          <option value="" disabled selected>Select your industry</option>
+          <option value="retail">Retail / E-commerce</option>
+          <option value="services">Professional Services (Consulting, Legal, Finance)</option>
+          <option value="manufacturing">Manufacturing / Trading</option>
+          <option value="food">Food & Beverage / Restaurant</option>
+          <option value="real-estate">Real Estate / Construction</option>
+          <option value="healthcare">Healthcare / Wellness</option>
+          <option value="education">Education / Training</option>
+          <option value="tech">Tech / SaaS / Digital</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Team Size</label>
+        <select id="t2-size">
+          <option value="" disabled selected>Select team size</option>
+          <option value="small">5–20 people</option>
+          <option value="mid">20–100 people</option>
+          <option value="large">100–500 people</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-label">Where Your Team Spends Most Time</div>
+      <div class="radio-opts" id="t2-time">
+        <div class="radio-opt sel" data-group="t2-time" data-val="customer" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Customer communication & follow-up</div></div>
+        <div class="radio-opt" data-group="t2-time" data-val="content" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Creating content, proposals, or reports</div></div>
+        <div class="radio-opt" data-group="t2-time" data-val="data" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Data entry, reporting, and admin</div></div>
+        <div class="radio-opt" data-group="t2-time" data-val="ops" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Operations and logistics coordination</div></div>
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-label">Your Biggest Frustration Right Now</div>
+      <div class="radio-opts" id="t2-pain">
+        <div class="radio-opt sel" data-group="t2-pain" data-val="speed" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Things take too long — we move slowly</div></div>
+        <div class="radio-opt" data-group="t2-pain" data-val="cost" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Costs are too high for the output we get</div></div>
+        <div class="radio-opt" data-group="t2-pain" data-val="quality" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Output quality is inconsistent</div></div>
+        <div class="radio-opt" data-group="t2-pain" data-val="scale" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Can't scale without hiring more people</div></div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcAI()">Find My AI Opportunities →</button>
+  </div>
+
+  <div class="result-block" id="t2-result">
+    <div class="big-result">
+      <div class="big-result-label">Recoverable Time (Estimate)</div>
+      <div class="big-result-num" id="t2-score-num" style="color:var(--cyan)">0/10</div>
+      <div class="big-result-sub" id="t2-score-sub"></div>
+    </div>
+    <div class="breakdown" id="t2-breakdown"></div>
+    <div class="insight" id="t2-insight" style="border-color:var(--cyan)">
+      <div class="insight-tag" style="color:var(--cyan)">Where to Start</div>
+      <div class="insight-txt" id="t2-insight-txt"></div>
+    </div>
+    <div class="wa-cta">
+      <div class="wa-cta-tag">Cut Through the AI Hype</div>
+      <div class="wa-cta-h">Talk to Sudhanshu</div>
+      <div class="wa-cta-sub">Get a clear, no-jargon answer on which AI tools are actually worth your time and money.</div>
+      <a class="wa-btn" id="t2-wa-btn" href="#" target="_blank"><span class="wa-icon">💬</span> WhatsApp My Result</a>
+    </div>
+    <button class="reset-btn" onclick="resetTool('t2')">← Try Again</button>
+  </div>
+
+  <div class="tool-footer-nav">
+    <span class="tfn-label">Next Tool</span>
+    <button class="tfn-next" onclick="switchTool(2)">📊 Decision Risk Scorer →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     TOOL 3: DECISION RISK SCORER
+═══════════════════════════════════ -->
+<div class="tool-panel" id="tool-2">
+  <div class="tool-hdr">
+    <div class="tool-num">Tool 03 of 04</div>
+    <div class="tool-name" style="color:var(--purple)">Decision<br>Risk Scorer</div>
+    <p class="tool-desc">About to make a big business move — new market, new channel, new hire, new product? <strong>Score the risk before you commit the capital.</strong></p>
+  </div>
+
+  <div id="t3-form">
+    <div class="form-section">
+      <div class="form-section-label">The Decision</div>
+      <div class="field">
+        <label>What Type of Decision Is This?</label>
+        <select id="t3-type">
+          <option value="" disabled selected>Select decision type</option>
+          <option value="expansion">Geographic expansion / new city or market</option>
+          <option value="channel">New sales or marketing channel</option>
+          <option value="product">New product or service line</option>
+          <option value="hire">Key hire or team expansion</option>
+          <option value="tech">Major tech or tool investment</option>
+          <option value="partner">Partnership or acquisition</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Capital at Risk (₹)</label>
+        <input type="number" id="t3-capital" placeholder="Total investment if you proceed" min="0">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-label">Rate Your Confidence (1 = Not Sure, 5 = Very Sure)</div>
+
+      <div class="field">
+        <label>We have validated demand for this move</label>
+        <select id="t3-demand">
+          <option value="1">1 — We're assuming there's demand</option>
+          <option value="2">2 — We've heard interest but haven't tested</option>
+          <option value="3">3 — Some early signals or small tests</option>
+          <option value="4">4 — Clear demand signals from target market</option>
+          <option value="5">5 — Proven demand with paying customers</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>We understand the competitive landscape</label>
+        <select id="t3-competition">
+          <option value="1">1 — We haven't researched competitors</option>
+          <option value="2">2 — We know who the big players are</option>
+          <option value="3">3 — We've mapped out the main players</option>
+          <option value="4">4 — We have a clear competitive advantage</option>
+          <option value="5">5 — We know exactly how we win against each competitor</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>We have the internal capacity to execute this</label>
+        <select id="t3-capacity">
+          <option value="1">1 — We're already stretched thin</option>
+          <option value="2">2 — It'll be tight but we think we can manage</option>
+          <option value="3">3 — We'd need to hire or reorganise slightly</option>
+          <option value="4">4 — We have the team, need some upskilling</option>
+          <option value="5">5 — We're fully ready to execute immediately</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>We have a clear fallback if this doesn't work</label>
+        <select id="t3-fallback">
+          <option value="1">1 — No plan B — this has to work</option>
+          <option value="2">2 — Vague fallback — no specifics</option>
+          <option value="3">3 — Some fallback options identified</option>
+          <option value="4">4 — Clear exit criteria defined</option>
+          <option value="5">5 — Full risk mitigation plan with clear triggers</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcRisk()">Score My Decision Risk →</button>
+  </div>
+
+  <div class="result-block" id="t3-result">
+    <div class="big-result">
+      <div class="big-result-label">Decision Risk Score</div>
+      <div class="big-result-num" id="t3-risk-num" style="color:var(--purple)">0/100</div>
+      <div class="big-result-sub" id="t3-risk-sub"></div>
+    </div>
+    <div class="breakdown" id="t3-breakdown"></div>
+    <div class="insight" id="t3-insight" style="border-color:var(--purple)">
+      <div class="insight-tag" style="color:var(--purple)">Before You Commit</div>
+      <div class="insight-txt" id="t3-insight-txt"></div>
+    </div>
+    <div class="wa-cta">
+      <div class="wa-cta-tag">Pressure-Test Your Decision</div>
+      <div class="wa-cta-h">Talk to Sudhanshu</div>
+      <div class="wa-cta-sub">Get a second opinion before committing capital. Bring your decision — leave with clarity.</div>
+      <a class="wa-btn" id="t3-wa-btn" href="#" target="_blank"><span class="wa-icon">💬</span> WhatsApp My Result</a>
+    </div>
+    <button class="reset-btn" onclick="resetTool('t3')">← Score Another Decision</button>
+  </div>
+
+  <div class="tool-footer-nav">
+    <span class="tfn-label">Next Tool</span>
+    <button class="tfn-next" onclick="switchTool(3)">🔍 Pipeline Leak Finder →</button>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     TOOL 4: PIPELINE LEAK FINDER
+═══════════════════════════════════ -->
+<div class="tool-panel" id="tool-3">
+  <div class="tool-hdr">
+    <div class="tool-num">Tool 04 of 04</div>
+    <div class="tool-name" style="color:var(--accent)">Pipeline<br>Leak Finder</div>
+    <p class="tool-desc">Leads come in. Most don't convert. <strong>Find exactly where your pipeline is leaking</strong> — and how much revenue it's costing you every month.</p>
+  </div>
+
+  <div id="t4-form">
+    <div class="form-section">
+      <div class="form-section-label">Your Pipeline Numbers (Monthly)</div>
+      <div class="field-row">
+        <div class="field">
+          <label>Total Leads / Enquiries</label>
+          <input type="number" id="t4-leads" placeholder="e.g. 100" min="0">
+        </div>
+        <div class="field">
+          <label>Leads That Get a Follow-Up</label>
+          <input type="number" id="t4-followup" placeholder="e.g. 70" min="0">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Leads That Get a Proposal / Quote</label>
+          <input type="number" id="t4-proposal" placeholder="e.g. 30" min="0">
+        </div>
+        <div class="field">
+          <label>Leads That Actually Close</label>
+          <input type="number" id="t4-closed" placeholder="e.g. 8" min="0">
+        </div>
+      </div>
+      <div class="field">
+        <label>Average Deal Value (₹)</label>
+        <input type="number" id="t4-deal" placeholder="e.g. 75000" min="0">
+      </div>
+    </div>
+
+    <div class="form-section">
+      <div class="form-section-label">Your Follow-Up Process</div>
+      <div class="radio-opts">
+        <div class="radio-opt sel" data-group="t4-process" data-val="none" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">No formal process — we follow up when we remember</div></div>
+        <div class="radio-opt" data-group="t4-process" data-val="manual" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Manual follow-up — tracked in a spreadsheet or notes</div></div>
+        <div class="radio-opt" data-group="t4-process" data-val="crm" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">CRM with reminders — mostly followed</div></div>
+        <div class="radio-opt" data-group="t4-process" data-val="auto" onclick="selectRadio(this)"><div class="radio-dot"></div><div class="radio-opt-txt">Automated sequences — no lead falls through</div></div>
+      </div>
+    </div>
+
+    <button class="calc-btn" onclick="calcPipeline()">Find My Pipeline Leak →</button>
+  </div>
+
+  <div class="result-block" id="t4-result">
+    <div class="big-result">
+      <div class="big-result-label">Recoverable Revenue (Estimate)</div>
+      <div class="big-result-num" id="t4-leak-num" style="color:var(--accent)">₹0</div>
+      <div class="big-result-sub" id="t4-leak-sub"></div>
+    </div>
+    <div class="breakdown" id="t4-breakdown"></div>
+    <div class="insight" id="t4-insight" style="border-color:var(--accent)">
+      <div class="insight-tag" style="color:var(--accent)">Biggest Leak Point</div>
+      <div class="insight-txt" id="t4-insight-txt"></div>
+    </div>
+    <div class="wa-cta">
+      <div class="wa-cta-tag">Plug the Leak</div>
+      <div class="wa-cta-h">Talk to Sudhanshu</div>
+      <div class="wa-cta-sub">Find out exactly what's happening at each stage and how to fix it — in one straight conversation.</div>
+      <a class="wa-btn" id="t4-wa-btn" href="#" target="_blank"><span class="wa-icon">💬</span> WhatsApp My Result</a>
+    </div>
+    <button class="reset-btn" onclick="resetTool('t4')">← Recalculate</button>
+  </div>
+
+  <div class="tool-footer-nav">
+    <span class="tfn-label">Start Over</span>
+    <button class="tfn-next" onclick="switchTool(0)">💸 Marketing Waste Calculator →</button>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="fl">Doers <span style="color:var(--accent)">DiGiTaL</span></span>
+  <span class="fc">Free tools for serious business owners · doers.digital · © 2026 Sudhanshu</span>
+</footer>
+
+<script>
+const WA_NUMBER = '';   // country code + number, no '+', e.g. '919876543210'
+const CONTACT_EMAIL = 'hello@doers.digital';
+
+// ── TAB SWITCHING ──
+function switchTool(idx){
+  document.querySelectorAll('.tool-panel').forEach((p,i)=>{
+    p.classList.toggle('active', i===idx);
+  });
+  document.querySelectorAll('.tool-tab').forEach((t,i)=>{
+    t.classList.toggle('active', i===idx);
+  });
+  window.scrollTo({top:document.querySelector('.tools-nav').offsetTop-70,behavior:'smooth'});
+}
+
+// ── RADIO SELECT ──
+function selectRadio(el){
+  const group = el.dataset.group;
+  document.querySelectorAll(`[data-group="${group}"]`).forEach(o=>o.classList.remove('sel'));
+  el.classList.add('sel');
+}
+
+function getRadioVal(group){
+  const sel = document.querySelector(`[data-group="${group}"].sel`);
+  return sel ? sel.dataset.val : null;
+}
+
+// ── FORMAT ──
+function fmtINR(n){
+  if(n>=10000000) return '₹'+(n/10000000).toFixed(1)+'Cr';
+  if(n>=100000) return '₹'+(n/100000).toFixed(1)+'L';
+  if(n>=1000) return '₹'+(n/1000).toFixed(0)+'K';
+  return '₹'+Math.round(n).toLocaleString('en-IN');
+}
+
+function waLink(num, msg){
+  if(WA_NUMBER) return `https://wa.me/${WA_NUMBER}?text=${encodeURIComponent(msg)}`;
+  return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent('Result from doers.digital tools')}&body=${encodeURIComponent(msg)}`;
+}
+
+// ── SHOW / HIDE ──
+function showResult(id){
+  document.getElementById(id+'-result').classList.add('show');
+  document.getElementById(id+'-form').style.display='none';
+  const br=document.querySelector('#'+id+'-result .big-result');
+  if(br && !br.querySelector('.est-note')) br.insertAdjacentHTML('beforeend','<div class="est-note">An estimate based on simple assumptions and what you entered. A starting point, not an audit.</div>');
+}
+function resetTool(id){ document.getElementById(id+'-result').classList.remove('show'); document.getElementById(id+'-form').style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); }
+
+// ══════════════════════════════
+// TOOL 1: MARKETING WASTE
+// ══════════════════════════════
+function calcWaste(){
+  const meta = parseFloat(document.getElementById('t1-meta').value)||0;
+  const google = parseFloat(document.getElementById('t1-google').value)||0;
+  const agency = parseFloat(document.getElementById('t1-agency').value)||0;
+  const other = parseFloat(document.getElementById('t1-other').value)||0;
+  const leads = parseFloat(document.getElementById('t1-leads').value)||0;
+  const conv = parseFloat(document.getElementById('t1-conv').value)||0;
+  const rev = parseFloat(document.getElementById('t1-rev').value)||0;
+  const tracking = getRadioVal('t1-track');
+
+  const total = meta+google+agency+other;
+  if(total===0){ alert('Please enter at least one spend amount.'); return; }
+
+  const customers = leads*(conv/100);
+  const revenue = customers*rev;
+  const cpa = customers>0 ? total/customers : total;
+
+  // Benchmark CPA by industry estimate (simplified)
+  const benchmarkCPA = rev*0.15; // healthy CPA = 15% of deal value
+  const trackingMultiplier = tracking==='none'?0.35:tracking==='partial'?0.2:0.08;
+
+  // Waste estimate: inefficiency + tracking blind spots + agency overhead
+  const agencyWaste = agency*0.35; // industry avg: 35% of agency fee is overhead
+  const adWaste = (meta+google)*trackingMultiplier;
+  const cpaWaste = cpa>benchmarkCPA*2 ? (cpa-benchmarkCPA)*customers*0.5 : 0;
+  const totalWaste = Math.round(agencyWaste+adWaste+cpaWaste);
+  const wastePct = total>0 ? Math.round((totalWaste/total)*100) : 0;
+
+  // Big number
+  document.getElementById('t1-waste-num').textContent = fmtINR(totalWaste);
+  document.getElementById('t1-waste-sub').innerHTML = `Roughly <strong>${wastePct}% of your monthly spend</strong> may be going to inefficiency, based on the assumptions shown below.`;
+  document.getElementById('t1-glow').style.background = 'radial-gradient(ellipse 70% 50% at 50% 100%,rgba(255,122,61,.08) 0%,transparent 70%)';
+
+  // Breakdown
+  let bk = '';
+  bk += `<div class="bk-row"><span class="bk-label">Total Monthly Spend</span><span class="bk-val" style="color:var(--text)">${fmtINR(total)}</span></div>`;
+  bk += `<div class="bk-row"><span class="bk-label">Revenue Generated</span><span class="bk-val" style="color:var(--accent)">${fmtINR(revenue)}</span></div>`;
+  bk += `<div class="bk-row"><span class="bk-label">Your Cost per Customer</span><span class="bk-val" style="color:${cpa>benchmarkCPA*1.5?'var(--orange)':'var(--accent)'}">${fmtINR(cpa)}</span><span class="bk-status" style="color:${cpa>benchmarkCPA*1.5?'var(--orange)':'var(--accent)'};border-color:${cpa>benchmarkCPA*1.5?'var(--orange)':'var(--accent)'}">${cpa>benchmarkCPA*1.5?'HIGH':'GOOD'}</span></div>`;
+  bk += `<div class="bk-row"><span class="bk-label">Target CPA (assumed: 15% of deal value)</span><span class="bk-val" style="color:var(--muted)">${fmtINR(benchmarkCPA)}</span></div>`;
+  if(agency>0) bk += `<div class="bk-row"><span class="bk-label">Assumed agency overhead (35% of retainer)</span><span class="bk-val" style="color:var(--orange)">${fmtINR(agencyWaste)}</span></div>`;
+  document.getElementById('t1-breakdown').innerHTML = bk;
+
+  // Insight
+  let insight = '';
+  if(tracking==='none') insight = `<strong>The biggest issue: you're flying blind.</strong> Without knowing which channel brings your customers, you can't cut waste — you can only guess. Before anything else, set up basic UTM tracking and a simple attribution model. That one step will show you exactly where to cut and where to double down.`;
+  else if(cpa>benchmarkCPA*2) insight = `<strong>Your cost per customer is ${Math.round(cpa/benchmarkCPA)}× higher than the target used in this estimate.</strong> This usually means either the wrong audience targeting, a weak conversion page, or an offer that doesn't match what the market wants. The spend isn't the problem — the efficiency is.`;
+  else if(agency>0 && agencyWaste>20000) insight = `<strong>Your agency retainer has significant overhead baked in.</strong> This estimate treats ${Math.round((agencyWaste/agency)*100)}% of the retainer as overhead. That is an assumption, not a fact about your agency. Ask your agency for a full breakdown of where every rupee goes. If they can't answer clearly, that's your answer.`;
+  else insight = `<strong>Your numbers are better than average — but there's still room.</strong> The ${wastePct}% waste estimate rests on simple assumptions, not an audit of your accounts. The real question is which specific channel is underperforming. That's where the conversation should go next.`;
+  document.getElementById('t1-insight-txt').innerHTML = insight;
+
+  // WA
+  const msg = `Hi Sudhanshu, I just used the Marketing Waste Calculator on doers.digital.\n\nMy result:\n• Monthly Spend: ${fmtINR(total)}\n• Estimated Waste: ${fmtINR(totalWaste)} (${wastePct}%)\n• Cost per Customer: ${fmtINR(cpa)}\n\nI'd like to understand where the waste is coming from and what to fix first.`;
+  document.getElementById('t1-wa-btn').href = waLink(WA_NUMBER, msg);
+
+  showResult('t1');
+}
+
+// ══════════════════════════════
+// TOOL 2: AI RELEVANCE FINDER
+// ══════════════════════════════
+function calcAI(){
+  const industry = document.getElementById('t2-industry').value;
+  const size = document.getElementById('t2-size').value;
+  const timeSpend = getRadioVal('t2-time');
+  const pain = getRadioVal('t2-pain');
+  if(!industry||!size){ alert('Please select your industry and team size.'); return; }
+
+  // Recoverable time: a range by team size, adjusted by where time goes. Assumes Rs 600/hour loaded cost.
+  const base = size==='small'?[3,6]:size==='mid'?[8,16]:[16,30];
+  const f = timeSpend==='data'?1.2:timeSpend==='ops'?0.8:1;
+  const hrsLo = Math.round(base[0]*f), hrsHi = Math.round(base[1]*f);
+  const hoursPerWeek = Math.round((hrsLo+hrsHi)/2);
+  const monthlySaving = hoursPerWeek*4*600;
+
+  // Top AI recommendations by input
+  const aiRecs = {
+    customer: [{name:'AI Email & WhatsApp Responder', desc:'Handles 60-70% of routine customer queries automatically',saving:'4-6 hrs/week'},{name:'AI Follow-Up Sequences',desc:'Automated personalised follow-ups that don\'t feel automated',saving:'3-4 hrs/week'}],
+    content: [{name:'AI Content Generation',desc:'First drafts of proposals, emails, social posts in minutes',saving:'5-8 hrs/week'},{name:'AI Proposal Builder',desc:'Custom proposals from a brief in under 10 minutes',saving:'3-5 hrs/week'}],
+    data: [{name:'AI Reporting Automation',desc:'Dashboards that update and summarise themselves',saving:'3-4 hrs/week'},{name:'AI Data Entry & Extraction',desc:'Pulls data from emails, forms, and documents automatically',saving:'4-6 hrs/week'}],
+    ops: [{name:'AI Workflow Coordinator',desc:'Coordinates tasks and reminders across your team',saving:'2-3 hrs/week'},{name:'AI Document Processing',desc:'Reads, categorises, and routes incoming documents',saving:'3-4 hrs/week'}],
+  };
+  const recs = aiRecs[timeSpend]||aiRecs['content'];
+
+  document.getElementById('t2-score-num').textContent = hrsLo+'–'+hrsHi+' hrs/wk';
+  document.getElementById('t2-score-sub').innerHTML = `Time your team could plausibly recover each week with well-chosen automation. That is roughly <strong>${fmtINR(hrsLo*4*600)} – ${fmtINR(hrsHi*4*600)} a month</strong> at an assumed ₹600 an hour.`;
+
+  let bk = '';
+  recs.forEach((r,i)=>{
+    bk += `<div class="bk-row" style="flex-direction:column;align-items:flex-start;gap:.5rem;padding:1.25rem 1.5rem">
+      <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:1rem">
+        <span class="bk-label" style="font-size:14px;color:var(--text);font-family:var(--fb);font-weight:500">${r.name}</span>
+        <span class="bk-status" style="color:var(--cyan);border-color:var(--cyan);white-space:nowrap">${r.saving}</span>
+      </div>
+      <span style="font-size:13px;color:var(--muted);font-weight:300">${r.desc}</span>
+    </div>`;
+  });
+  document.getElementById('t2-breakdown').innerHTML = bk;
+
+  const painInsights = {
+    speed:`<strong>Speed is your biggest AI win.</strong> The tools above directly attack the slowest parts of your operation. With the right setup, the tasks that take your team half a day today can be done in under an hour — without hiring.`,
+    cost:`<strong>AI's ROI in your situation is almost immediate.</strong> The time savings above translate directly to cost reduction — either in staff hours or in the cost of slow decisions. At your team size, this is a ${fmtINR(monthlySaving)}/month swing.`,
+    quality:`<strong>AI removes the inconsistency problem.</strong> The best output your team produces today becomes the minimum with AI. Every email, proposal, and report follows the same quality floor — regardless of who writes it or when.`,
+    scale:`<strong>AI is how you scale without headcount.</strong> The tools above let your current team do the work of a team 1.5-2× their size. That's the only way to grow margin while growing revenue.`,
+  };
+  document.getElementById('t2-insight-txt').innerHTML = painInsights[pain]||painInsights['speed'];
+
+  const msg = `Hi Sudhanshu, I just used the AI Relevance Finder on doers.digital.\n\nMy result:\n• Estimated hours recoverable: ${hrsLo}–${hrsHi}/week\n• Industry: ${industry}\n• Estimated Monthly Saving: ${fmtINR(monthlySaving)}\n• Biggest time sink: ${timeSpend}\n\nI'd like to understand which AI tools are actually worth implementing for my business.`;
+  document.getElementById('t2-wa-btn').href = waLink(WA_NUMBER, msg);
+
+  showResult('t2');
+}
+
+// ══════════════════════════════
+// TOOL 3: DECISION RISK SCORER
+// ══════════════════════════════
+function calcRisk(){
+  const type = document.getElementById('t3-type').value;
+  const capital = parseFloat(document.getElementById('t3-capital').value)||0;
+  const demand = parseInt(document.getElementById('t3-demand').value)||1;
+  const competition = parseInt(document.getElementById('t3-competition').value)||1;
+  const capacity = parseInt(document.getElementById('t3-capacity').value)||1;
+  const fallback = parseInt(document.getElementById('t3-fallback').value)||1;
+  if(!type||capital===0){ alert('Please select a decision type and enter capital at risk.'); return; }
+
+  const avgScore = (demand+competition+capacity+fallback)/4;
+  const riskScore = Math.round((avgScore/5)*100);
+  const atRisk = Math.round(capital*(1-(avgScore/5))*0.8);
+
+  const riskLabel = riskScore>=80?'LOW RISK':riskScore>=60?'MODERATE':riskScore>=40?'HIGH RISK':'CRITICAL';
+  const riskColor = riskScore>=80?'var(--accent)':riskScore>=60?'var(--accent)':riskScore>=40?'var(--orange)':'#ff3030';
+
+  document.getElementById('t3-risk-num').textContent = riskScore+'/100';
+  document.getElementById('t3-risk-num').style.color = riskColor;
+  document.getElementById('t3-risk-sub').innerHTML = riskLabel==='LOW RISK'
+    ? `<strong>This decision is reasonably well-prepared.</strong> The main gaps to close are highlighted below.`
+    : `<strong>Capital at risk if this doesn't work: approximately ${fmtINR(atRisk)}.</strong> Before committing, close the gaps below.`;
+
+  const labels = ['Demand Validation','Competitive Clarity','Execution Capacity','Risk Mitigation'];
+  const vals = [demand,competition,capacity,fallback];
+  let bk = '';
+  vals.forEach((v,i)=>{
+    const pct = v/5;
+    const col = pct>=0.8?'var(--accent)':pct>=0.6?'#ffd23f':'var(--orange)';
+    bk += `<div class="bk-row"><span class="bk-label">${labels[i]}</span><div style="flex:1;height:2px;background:var(--border2);margin:0 1rem"><div style="height:100%;background:${col};width:${pct*100}%"></div></div><span class="bk-val" style="color:${col};font-size:18px">${v}/5</span></div>`;
+  });
+  document.getElementById('t3-breakdown').innerHTML = bk;
+
+  const weakest = Math.min(demand,competition,capacity,fallback);
+  const weakestIdx = vals.indexOf(weakest);
+  const fixMap = [
+    'You\'re assuming demand exists. <strong>Before committing capital, run a minimum viable test</strong> — a landing page, a pilot, a small cohort. Validated demand is worth 10× more than assumed demand.',
+    'You don\'t know how you win against each competitor. <strong>Map out 3 direct competitors and define your specific advantage against each one.</strong> If you can\'t, the market will define it for you — usually by price.',
+    'Your team is already stretched. <strong>A new initiative on a tired team fails twice — the initiative and the core business.</strong> Define exactly what you\'re deprioritising before you proceed.',
+    'You have no clear exit criteria. <strong>Define what "this isn\'t working" looks like — a specific number, a specific date.</strong> Without that, you\'ll keep investing past the point of return.'
+  ];
+  document.getElementById('t3-insight-txt').innerHTML = fixMap[weakestIdx];
+
+  const msg = `Hi Sudhanshu, I just used the Decision Risk Scorer on doers.digital.\n\nMy result:\n• Decision: ${type}\n• Capital at Risk: ${fmtINR(capital)}\n• Risk Score: ${riskScore}/100 (${riskLabel})\n• Weakest area: ${labels[weakestIdx]} (${weakest}/5)\n\nI'd like to pressure-test this decision before committing.`;
+  document.getElementById('t3-wa-btn').href = waLink(WA_NUMBER, msg);
+
+  showResult('t3');
+}
+
+// ══════════════════════════════
+// TOOL 4: PIPELINE LEAK FINDER
+// ══════════════════════════════
+function calcPipeline(){
+  const leads = parseFloat(document.getElementById('t4-leads').value)||0;
+  const followup = parseFloat(document.getElementById('t4-followup').value)||0;
+  const proposal = parseFloat(document.getElementById('t4-proposal').value)||0;
+  const closed = parseFloat(document.getElementById('t4-closed').value)||0;
+  const deal = parseFloat(document.getElementById('t4-deal').value)||0;
+  const process = getRadioVal('t4-process');
+  if(leads===0||deal===0){ alert('Please enter your leads and deal value.'); return; }
+
+  // Conversion rates at each stage
+  const r1 = leads>0?(followup/leads)*100:0;
+  const r2 = followup>0?(proposal/followup)*100:0;
+  const r3 = proposal>0?(closed/proposal)*100:0;
+  const overall = leads>0?(closed/leads)*100:0;
+
+  // Benchmark conversion rates
+  const b1=80, b2=50, b3=25; // industry benchmarks
+  
+  // Lost at each stage
+  const lostStage1 = Math.max(0,leads-followup);
+  const lostStage2 = Math.max(0,followup-proposal);
+  const lostStage3 = Math.max(0,proposal-closed);
+
+  // Revenue lost
+  const revLost1 = lostStage1*(b1/100)*(b2/100)*(b3/100)*deal;
+  const revLost2 = lostStage2*(b2/100)*(b3/100)*deal;
+  const revLost3 = lostStage3*(b3/100)*deal;
+  const totalLost = Math.round(revLost1+revLost2+revLost3);
+
+  // Process multiplier
+  const processBoost = process==='none'?0.4:process==='manual'?0.25:process==='crm'?0.1:0;
+  const recoverableLost = Math.round(totalLost*processBoost);
+
+  document.getElementById('t4-leak-num').textContent = fmtINR(recoverableLost);
+  document.getElementById('t4-leak-sub').innerHTML = `With the right follow-up system, you could plausibly recover roughly <strong>${fmtINR(recoverableLost)}/month</strong> from leads that are already in your pipeline — without spending another rupee on marketing.`;
+
+  const stages = [
+    {name:'Lead → Follow-Up',actual:Math.round(r1),bench:b1,lost:lostStage1,revlost:Math.round(revLost1)},
+    {name:'Follow-Up → Proposal',actual:Math.round(r2),bench:b2,lost:lostStage2,revlost:Math.round(revLost2)},
+    {name:'Proposal → Closed',actual:Math.round(r3),bench:b3,lost:lostStage3,revlost:Math.round(revLost3)},
+  ];
+  let bk = '';
+  stages.forEach(s=>{
+    const ok = s.actual>=s.bench*0.8;
+    const col = ok?'var(--accent)':'var(--orange)';
+    bk += `<div class="bk-row" style="flex-wrap:wrap;gap:.75rem">
+      <span class="bk-label">${s.name}</span>
+      <div style="display:flex;align-items:center;gap:.75rem;margin-left:auto">
+        <span style="font-size:11px;color:var(--muted);font-weight:300">Yours: <span style="color:${col};font-weight:600">${s.actual}%</span></span>
+        <span style="font-size:11px;color:var(--muted);font-weight:300">Assumed: ${s.bench}%</span>
+        <span class="bk-status" style="color:${col};border-color:${col}">${ok?'OK':'LEAK'}</span>
+      </div>
+    </div>`;
+  });
+  document.getElementById('t4-breakdown').innerHTML = bk;
+
+  // Biggest leak
+  const sorted = [...stages].sort((a,b)=>b.revlost-a.revlost);
+  const biggest = sorted[0];
+  const insightMap = {
+    none:`<strong>The biggest leak: no follow-up system.</strong> ${Math.round((leads-followup)/leads*100)}% of your leads never hear from you again after the first contact. That's your single highest-value fix — an automated first follow-up sequence would recover ${fmtINR(recoverableLost)} of that lost revenue.`,
+    manual:`<strong>Manual follow-up is costing you leads.</strong> Humans forget, get busy, and deprioritise follow-ups under pressure. The leads you lose here were already interested — they just needed one more touchpoint. A simple CRM with reminders would close this gap immediately.`,
+    crm:`<strong>Your biggest leak is at the ${biggest.name} stage.</strong> ${biggest.lost} leads drop off here every month — worth approximately ${fmtINR(biggest.revlost)} in lost revenue. This usually means either the wrong leads entering the top (targeting problem) or friction at this specific stage (process problem).`,
+    auto:`<strong>Your process is solid — now it's a targeting problem.</strong> With automated follow-up in place, the remaining leak is about lead quality. Review where your best-converting leads come from and double that channel — while cutting the lowest-converting source.`,
+  };
+  document.getElementById('t4-insight-txt').innerHTML = insightMap[process]||insightMap['none'];
+
+  const msg = `Hi Sudhanshu, I just used the Pipeline Leak Finder on doers.digital.\n\nMy result:\n• Monthly Leads: ${leads}\n• Closed: ${closed} (${Math.round(overall)}% overall conversion)\n• Recoverable Revenue Lost: ${fmtINR(recoverableLost)}/month\n• Biggest leak: ${biggest.name}\n\nI'd like to understand how to plug this leak.`;
+  document.getElementById('t4-wa-btn').href = waLink(WA_NUMBER, msg);
+
+  showResult('t4');
+}
+(function(){
+  const hdr=document.getElementById('hdrWa');
+  if(WA_NUMBER && hdr){ hdr.href='https://wa.me/'+WA_NUMBER; hdr.style.display=''; }
+  if(!WA_NUMBER){ document.querySelectorAll('.wa-btn').forEach(b=>{ b.innerHTML='<span class="wa-icon">✉️</span> Email My Result'; b.removeAttribute('target'); }); }
+})();
+</script>
+</body>
+</html>
